@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600&family=Space+Grotesk:wght@400;500;700;800;900&family=Inter:wght@200;300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  /* Custom Pantone Colors */
+  --color-pantone-50: #fff1f2;
+  --color-pantone-100: #ffe4e6;
+  --color-pantone-200: #fecdd3;
+  --color-pantone-300: #fda4af;
+  --color-pantone-400: #fb7185;
+  --color-pantone-500: #f43f5e;
+  --color-pantone-600: #e11d48;
+  --color-pantone-700: #be123c;
+  --color-pantone-800: #9f1239;
+  --color-pantone-850: #8f0d30;
+  --color-pantone-900: #881337;
+  --color-pantone-950: #4c0519;
+
+  --color-pantone-red: #D01025;
+  --color-pantone-darkred: #9E0A1B;
+  --color-pantone-lightred: #FFF0F2;
+  --color-pantone-softred: #FDE2E4;
+  --color-pantone-redborder: #F8B4B9;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.font-headline {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono-code {
+  font-family: 'Fira Code', monospace;
+}
+
+/* Custom Scrollbar
+   Dulu: garis merah tipis 6px tanpa jalur, sering dikira hiasan.
+   Sekarang: jalur (track) abu muda yang terlihat + pegangan (thumb) abu yang lebih tebal,
+   menggelap saat disorot mouse, supaya jelas dikenali sebagai scrollbar. */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+::-webkit-scrollbar-track {
+  background: #EEF2F7;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #A0AEC0;
+  border-radius: 8px;
+  border: 2px solid #EEF2F7;
+  min-height: 40px;
+  min-width: 40px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #64748B;
+}
+::-webkit-scrollbar-corner {
+  background: #EEF2F7;
+}
+.dark ::-webkit-scrollbar-track,
+.dark ::-webkit-scrollbar-corner {
+  background: #1F2937;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background-color: #4B5563;
+  border-color: #1F2937;
+}
+.dark ::-webkit-scrollbar-thumb:hover {
+  background-color: #9CA3AF;
+}
+
+/* Firefox (tidak mendukung ::-webkit-scrollbar) */
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-color: #A0AEC0 #EEF2F7; }
+  .dark * { scrollbar-color: #4B5563 #1F2937; }
+}
+
+/* Light Mode Grid Pattern */
+.bg-grid-pattern-light {
+  background-image: 
+    linear-gradient(to right, rgba(208, 16, 37, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(208, 16, 37, 0.06) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Dark Mode Grid Pattern */
+.bg-grid-pattern-dark {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Pantone Red Accent Card Glow */
+.pantone-glow {
+  box-shadow: 0 20px 40px -15px rgba(208, 16, 37, 0.12);
+}
+
+/* Tab Transitions */
+.tab-btn {
+  transition: all 0.2s ease-in-out;
+}
+.tab-btn.active-tab {
+  background-color: var(--color-pantone-700);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.25);
+}
+.tab-btn.active-tab .badge-count {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Toast slide animation */
+@keyframes toast-slide-in {
+  from { transform: translateY(100%) scale(0.9); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+.toast-animate {
+  animation: toast-slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Interactive KPI Card Styles */
+.kpi-card {
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+.kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px -5px rgba(136, 19, 55, 0.35);
+}
+.kpi-card.active-card {
+  outline: 2px solid var(--color-pantone-400);
+  box-shadow: 0 0 20px 2px rgba(251, 113, 133, 0.5);
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Print Styles */
+@media print {
+  body { background: white !important; color: black !important; }
+  #dashboard-view, #right-sidebar, #toast-container, .no-print { display: none !important; }
+  #view-result-page { display: flex !important; padding: 0 !important; }
+}

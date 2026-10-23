@@ -1,0 +1,52 @@
+[
+  {
+    "Part No": "RAA34445411",
+    "Description": "Sheet,Copper",
+    "BOM Level": 3
+  },
+  {
+    "Part No": "EAT30762001",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 4
+  },
+  {
+    "Part No": "EAT30762002",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 4
+  },
+  {
+    "Part No": "EAT30762001",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 4
+  },
+  {
+    "Part No": "EAT30762002",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 4
+  },
+  {
+    "Part No": "EAT30762001",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 3
+  },
+  {
+    "Part No": "EAT30762002",
+    "Description": "Module,Wifi Bluetooth Module",
+    "BOM Level": 3
+  },
+  {
+    "Part No": "4812V00004D",
+    "Description": "Ribbon",
+    "BOM Level": 2
+  },
+  {
+    "Part No": "4812V00004D",
+    "Description": "Ribbon",
+    "BOM Level": 3
+  },
+  {
+    "Part No": "4812V00004D",
+    "Description": "Ribbon",
+    "BOM Level": 2
+  }
+]

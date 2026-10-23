@@ -1,0 +1,15 @@
+polars
+pandas
+requests
+openpyxl
+pymongo
+connectorx
+fastapi[standard]
+uvicorn
+dej-sdk
+sqlalchemy
+psycopg[binary]
+psycopg
+streamlit
+browser_cookie3
+beautifulsoup4

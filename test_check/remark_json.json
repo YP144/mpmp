@@ -1,0 +1,666 @@
+{
+    "resultId": "6ad6db6d893e8decb80ea441",
+    "targetName": "55QNED75CST.KWHGLJD",
+    "devName": "55QNED75CST.AWZGLCX",
+    "initName": "55QNED75CSA.AGAGLCX",
+    "version": 7,
+    "status": "draft",
+    "finalRemark": "Ok",
+    "savedAt": "2026-10-20T03:34:12.736Z",
+    "modules": {
+        "Structure & Operation Plan Check": [
+            {
+                "table": "sec-structure",
+                "rowIndex": 0,
+                "rowKey": "Accessory Assembly",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 1,
+                "rowKey": "MR Battery",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 2,
+                "rowKey": "MR Remocon",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 3,
+                "rowKey": "Dettached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 4,
+                "rowKey": "IR Blaster",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 5,
+                "rowKey": "Bracket Assembly",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 6,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 7,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 8,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 9,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 10,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 11,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 12,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 13,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 14,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 15,
+                "rowKey": "Structure",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 16,
+                "rowKey": "SUB EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 17,
+                "rowKey": "WIFI FFC",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 18,
+                "rowKey": "WIFI/BT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 19,
+                "rowKey": "IR",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 20,
+                "rowKey": "OLED Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 21,
+                "rowKey": "Module",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 22,
+                "rowKey": "Left Speaker",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 23,
+                "rowKey": "Right Speaker",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 24,
+                "rowKey": "FFC",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": "Ok, FFC Checked"
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 25,
+                "rowKey": "FFC",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 26,
+                "rowKey": "Harness Multi Lv1",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 27,
+                "rowKey": "Harness Single Lv1",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 28,
+                "rowKey": "Dettached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 29,
+                "rowKey": "EBT Dettached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 30,
+                "rowKey": "Dettached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 31,
+                "rowKey": "S Label Dettached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 32,
+                "rowKey": "EBT Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 33,
+                "rowKey": "Attached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 34,
+                "rowKey": "S Label Attached Power Cord",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 35,
+                "rowKey": "Main EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 36,
+                "rowKey": "Transparent Tape",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 37,
+                "rowKey": "Label EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 38,
+                "rowKey": "Ribbon EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 39,
+                "rowKey": "FFC Under EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 40,
+                "rowKey": "FFC Under EBT",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 41,
+                "rowKey": "Harness Multi",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 42,
+                "rowKey": "Harness Single",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 43,
+                "rowKey": "Main Plate Shield",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 44,
+                "rowKey": "Main EBT RU",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 45,
+                "rowKey": "Tuner RU",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 46,
+                "rowKey": "Tuner case cover",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 47,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 48,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 49,
+                "rowKey": "Packing Assembly",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 50,
+                "rowKey": "Packing Package",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 51,
+                "rowKey": "Main EBU",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 52,
+                "rowKey": "Label",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 53,
+                "rowKey": "Ribbon",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 54,
+                "rowKey": "Harness Multi",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 55,
+                "rowKey": "Harness Single",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 56,
+                "rowKey": "M.I PCBA",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 57,
+                "rowKey": "Main Plate Shield",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 58,
+                "rowKey": "PCB Holder Under EBU",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 59,
+                "rowKey": "Tuner RU EBU",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 60,
+                "rowKey": "EDID",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 61,
+                "rowKey": "Structure and Operation Plan",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 62,
+                "rowKey": "Subsidiary Item",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 63,
+                "rowKey": "PCB Holder",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 64,
+                "rowKey": "EBU Service",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 65,
+                "rowKey": "M.I PCBA SVC",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 66,
+                "rowKey": "Tape",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 67,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 68,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 69,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 70,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            },
+            {
+                "table": "sec-structure",
+                "rowIndex": 71,
+                "rowKey": "-",
+                "category": "",
+                "mpxResult": "OK",
+                "engineerCheck": null,
+                "remark": ""
+            }
+        ],
+        "Tool Option Compare": [],
+        "HW Option Compare": [],
+        "Substitute Compare": [],
+        "Assy Release Status Compare": []
+    }
+}

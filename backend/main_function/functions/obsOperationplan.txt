@@ -1,0 +1,321 @@
+
+class GetOperationPart():
+    def __init__(self, targetModel: str):
+        self.targetModel = targetModel
+        self.getOPpart()
+
+
+    def getOPpart(self):
+        profile = ModelProfile(self.targetModel)
+
+
+        def safe_item(df: pl.DataFrame, column: str, default: str = "Not Found"):
+            if df is not None and df.height > 0 and column in df.columns:
+                value = df.item(0, column)
+
+                if value is None:
+                    return default
+
+                return value
+
+            return default
+
+        def read_latest_version(
+            db_uri: str,
+            prefix: str = "2026YHWplan_v",
+            schema: str = "public",
+        ) -> pl.DataFrame:
+      
+            tables_df = pl.read_database_uri(
+                query=f"""
+                    SELECT table_name
+                    FROM information_schema.tables
+                    WHERE table_schema = '{schema}'
+                    AND table_name LIKE '{prefix}%'
+                """,
+                uri=db_uri,
+            )
+
+            versions = []
+
+            for table_name in tables_df["table_name"].to_list():
+                match = re.match(rf"^{re.escape(prefix)}(\d+)_(\d+)$", table_name)
+
+                if match:
+                    major = int(match.group(1))
+                    minor = int(match.group(2))
+                    versions.append((major, minor, table_name))
+
+            if not versions:
+                raise Exception(f"No versioned table found with prefix: {prefix}")
+
+            latest_major, latest_minor, latest_table = max(
+                versions,
+                key=lambda x: (x[0], x[1])
+            )
+
+            print("Latest version:", f"v{latest_major}.{latest_minor}")
+            print("Latest table:", latest_table)
+
+            query = f'SELECT * FROM {schema}."{latest_table}"'
+
+            print("Read query:", query)
+
+            df = pl.read_database_uri(
+                query=query,
+                uri=db_uri,
+            )
+
+            df = df.with_columns(
+                pl.col("suffixHq").str.to_lowercase()
+            )
+
+            return df, latest_table
+
+        GetOPlist, latest_table = read_latest_version(
+            db_uri=OPurl
+        )
+
+        GetOPlist = GetOPlist.with_columns(
+            pl.col("suffixHq").str.to_lowercase()
+        )
+        
+        self.latest_version = latest_table
+        self.region_operationPlan = profile.GetRegionSuffix
+
+
+        # Get Remote
+        OpRemote = GetOPlist.filter(
+            (pl.col("partNo").str.contains(r"^AKB")) &
+            (pl.col("accMagicRemote") == profile.GetRemoteMR) &
+            (
+                pl.col("suffixHq").str.contains(rf"{profile.GetRegionSuffix}")
+            )
+        )
+
+        OpRemote = OpRemote.with_columns(
+            pl.lit("Remote").alias("Category")
+        )
+
+        if OpRemote.height > 0:
+            self.GetRemotePN = OpRemote.item(0, "partNo")
+            self.GetRemoteQty = OpRemote.item(0, "operationQuantity")
+
+            if "rawSubstitute" in OpRemote.columns:
+                self.GetRemoteSubs = OpRemote.item(0, "rawSubstitute")
+            else:
+                self.GetRemoteSubs = "No Substitute"
+
+        else:
+            self.GetRemotePN = "Not Found"
+            self.GetRemoteQty = "Not Found"
+            self.GetRemoteSubs = "Not Found"
+
+            OpRemote = GetOPlist.head(1).with_columns([
+                pl.lit("Remote").alias("Category"),
+                pl.lit("Not Found").alias("partNo"),
+                pl.lit(None).alias("operationLevel"),
+                pl.lit(None).alias("operationQuantity"),
+                pl.lit(None).alias("substitute"),
+                pl.lit(None).alias("rawSubstituteQuantity"),
+                pl.lit(None).alias("releaseNo"),
+                pl.lit("Remote operation data not found").alias("masterRemark"),
+                pl.lit(profile.GetRemoteMR).alias("accMagicRemote"),
+                pl.lit(profile.GetRegionSuffix).alias("suffixHq"),
+                pl.lit(None).alias("suffixHqException")
+            ])
+
+            
+        #Get Speaker - FInsihed
+        GetSpeakerrow = GetOPlist.filter(
+            (pl.col("partNo").str.contains(rf"^EAB")) &
+            (pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+            (pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+            (pl.col("plant").str.contains("LGEIN")) | (pl.col("plant").str.contains(rf" "))
+        ).unique()
+
+        GetSpeakerrow = GetSpeakerrow.with_columns(
+            pl.lit("Speaker").alias("Category")
+        )
+        
+
+        if GetSpeakerrow.height > 0:
+            self.GetSpeakerPN = GetSpeakerrow.item(0, "partNo")
+            self.GetSpeakerQty = GetSpeakerrow.item(0, "operationQuantity")
+            self.GetSpeakerSubs = GetSpeakerrow.item(0, "rawSubstitute")
+        else:
+            self.GetSpeakerPN = "Not Found"
+            self.GetSpeakerQty = "Not Found"
+            self.GetSpeakerSubs = "No Substitute"
+
+        #Get Power Cord
+        GetCordrow =  GetOPlist.filter(
+            (pl.col("partNo").str.contains(r"^EAD")) &
+            (pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+            (pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+            #(pl.col("plant").str.contains("LGEIN") | pl.col("plant").is_null()) & 
+            (pl.col("suffixHq").str.contains(rf"{profile.GetRegionSuffix}"))
+        )
+        GetCordrow = GetCordrow.with_columns("partNo").unique()
+        GetCordrow = GetCordrow.with_columns(
+            pl.lit("Power Cord").alias("Category")
+        )
+
+        if GetCordrow.height > 0:
+            self.GetCordPN = GetCordrow.item(0, "partNo")
+            self.GetCordQty = GetCordrow.item(0, "operationQuantity")
+        else:
+            self.GetCordPN = "Not Found"
+            self.GetCordQty = "Not Found"
+
+        #Get EDID
+        GetEdidrow = GetSpeakerPN = GetOPlist.filter(
+            (pl.col("partNo").str.contains(rf"^ECC"))
+        )
+        GetEdidrow = GetEdidrow.with_columns(
+            pl.lit("EDID").alias("Category")
+        )
+        
+
+        if GetEdidrow.height > 0:
+            self.GetEdidPN = GetEdidrow.item(0, "partNo")
+            self.GetEdidQty = GetEdidrow.item(0, "operationQuantity")
+        else:
+            self.GetEdidPN = "Not Found"
+            self.GetEdidQty = "Not Found"
+
+
+        GetHeatrow = GetOPlist.filter((pl.col("partNo").str.contains(rf"^EBS")) &
+        (pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+        (pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+        (pl.col("parentPartNo").str.contains(rf"EBT"))
+        
+        
+        #(pl.col("plant").str.contains("LGEIN") | pl.col("plant").is_null()) & 
+        #(pl.col("suffixHq").str.contains(rf"{profile.GetRegionSuffix}"))
+        )
+
+        GetHeatrow = GetHeatrow.with_columns(
+            pl.lit("Heat Plate").alias("Category")
+        )
+
+        jsonHeat = GetHeatrow.write_json()
+
+        if GetHeatrow.height > 0:    
+            self.GetHeatPN = GetHeatrow.item(0, "partNo")
+            self.GetHeatQty = GetHeatrow.item(0, "operationQuantity")
+        else:
+            self.GetHeatPN = "Not Found"
+            self.GetHeatQty = "Not Found"
+
+        GetWifirow = GetOPlist.filter((pl.col("partNo").str.contains(rf"^EAT")) &
+            (pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+            (pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+            #(pl.col("parentPartNo").str.contains(rf"EBT"))
+            
+            #(pl.col("plant").str.contains("LGEIN") | pl.col("plant").is_null()) & 
+            (pl.col("suffixHq").str.contains(rf"{profile.GetRegionSuffix}") | pl.col("suffixHq").is_null())
+        ).unique(subset="partNo")
+        GetWifirow = GetWifirow.with_columns(
+            pl.lit("WiFi").alias("Category")
+        )
+
+
+        jsonWiFI = GetWifirow.write_json()
+
+        if GetWifirow.height > 0:
+            self.GetWifiPN = GetWifirow.item(0, "partNo")
+            self.GetWiFiQty = GetWifirow.item(0, "operationQuantity")
+        else:
+            self.GetWifiPN = "Not Found"
+            self.GetWiFiQty = "Not Found"
+
+
+        if profile.GetRegionSuffix == "tt" or profile.GetRegionSuffix == "ts":
+            
+            GetBatteryrow = GetOPlist.filter((pl.col("partNo").str.contains(rf"^EAC")) &
+                #(pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+                #(pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+                #(pl.col("parentPartNo").str.contains(rf"EBT"))
+                
+                #(pl.col("plant").str.contains("LGEIN") | pl.col("plant").is_null()) & 
+                (pl.col("suffixHq").str.contains(profile.GetRegionSuffix) | pl.col("suffixHq").is_null())
+            )
+
+        else:
+
+            GetBatteryrow = GetOPlist.filter((pl.col("partNo").str.contains(rf"^6910VA")) &
+                #(pl.col("operationInch").str.contains(rf"{profile.GetInch}")) &
+                #(pl.col("operationSeries").str.contains(rf"{profile.GetSeries}")) &
+                #(pl.col("parentPartNo").str.contains(rf"EBT"))
+                
+                #(pl.col("plant").str.contains("LGEIN") | pl.col("plant").is_null()) & 
+                (pl.col("suffixHq").str.contains(profile.GetRegionSuffix) | pl.col("suffixHq").is_null())
+            )
+        GetBatteryrow = GetBatteryrow.with_columns(
+            pl.lit("Battery").alias("Category")
+        )
+
+
+        jsonBattery = GetBatteryrow.write_json()
+
+        if GetBatteryrow.height > 0:
+            self.GetBatteryPN = GetBatteryrow.item(0, "partNo")
+            self.GetBatteryQty = GetBatteryrow.item(0, "operationQuantity")
+        else:
+            self.GetBatteryPN = "Not Found"
+            self.GetBatteryQty = "Not Found"
+
+        if re.search(r"6 in 1", profile.GetBoardInfo, re.IGNORECASE):
+            # Get 6in1 Operation Plan
+            get_6in1operation = read_table(
+                db_uri=extraURL,
+                table_name="CVTEopplan"
+            )
+
+            self.region_frame = profile.GetHerosRegion
+
+            self.getVIebt = get_6in1operation.filter(
+                (pl.col("Inch") == profile.GetInch) &
+                (pl.col("Region").str.contains(profile.GetHerosRegion))
+            )
+
+            # Rename the column that holds the part number to "partNo" so it aligns during concat.
+            # Please replace "OriginalPartColumnName" with the actual name of the column in your database.
+            self.getVIebt = self.getVIebt.rename({"6in1 P/No": "partNo"})
+
+            self.getVIebt = self.getVIebt.with_columns(
+                pl.lit("6in1 EBT").alias("Category")
+            )
+
+            self.OperationGet = pl.concat(
+                [
+                    OpRemote,
+                    GetBatteryrow,
+                    GetSpeakerrow,
+                    GetCordrow,
+                    GetEdidrow,
+                    GetHeatrow,
+                    GetWifirow,
+                    self.getVIebt
+                ],
+                how="diagonal_relaxed"
+            )
+
+        else:
+                self.OperationGet = pl.concat(
+                [
+                    OpRemote,
+                    GetBatteryrow,
+                    GetSpeakerrow,
+                    GetCordrow,
+                    GetEdidrow,
+                    GetHeatrow,
+                    GetWifirow
+                ],
+                how="diagonal_relaxed"
+            )
+
+
+        self.OperationGet = self.OperationGet.with_row_index(name="row_number")
+        
