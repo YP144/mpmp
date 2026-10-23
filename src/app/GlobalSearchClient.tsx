@@ -36,11 +36,14 @@ import {
   ThumbsDown,
   Table as TableIcon,
   Filter,
-  ArrowUpDown,
   MoreHorizontal,
   FileText,
   ExternalLink,
-  Plus
+  Plus,
+  FileSearch,
+  X,
+  Boxes,
+  Layers
 } from 'lucide-react';
 
 interface RecentSearch {
@@ -76,30 +79,40 @@ interface TableRecord {
   size: string;
 }
 
+interface BomSpec {
+  id: string;
+  bomNumber: string;
+  title: string;
+  revision: string;
+  componentsCount: number;
+  status: 'Approved' | 'In Review' | 'Draft';
+  lastUpdated: string;
+}
+
 const PRESET_OPTIONS: PresetOption[] = [
   {
-    id: 'ai-agents',
-    title: 'AI Agents',
-    subtitle: 'Autonomous intelligent agents for workflow',
+    id: 'bom-assistant',
+    title: 'BOM Assistant',
+    subtitle: 'Autonomous intelligent agents for BOM Management and Automation',
     icon: Bot
   },
   {
-    id: 'custom-avatar',
-    title: 'Custom AI Avatar',
+    id: 'bom-validation',
+    title: 'BOM Validation',
     subtitle: 'Place lifelike avatars in videos',
     icon: UserCheck,
     badge: 'Pro'
   },
   {
-    id: 'video-agent',
-    title: 'Video Agent',
+    id: 'bom-change-eco',
+    title: 'BOM Change ECO',
     subtitle: 'Create a custom agent for brand',
     icon: Video,
     badge: 'Beta'
   },
   {
-    id: 'product-in-hand',
-    title: 'Product in Hand',
+    id: 'bom-operation-agent',
+    title: 'BOM Operation Agent',
     subtitle: 'Show products handled on screen',
     icon: Package
   }
@@ -160,8 +173,17 @@ const INITIAL_TABLE_RECORDS: TableRecord[] = [
   }
 ];
 
+const SAMPLE_BOM_DATA: BomSpec[] = [
+  { id: 'bom-1', bomNumber: 'BOM-2026-001', title: 'Main Control Unit (MCU) PCB Assembly', revision: 'v2.4', componentsCount: 142, status: 'Approved', lastUpdated: '2 hours ago' },
+  { id: 'bom-2', bomNumber: 'BOM-2026-042', title: 'Power Distribution Harness & Relays', revision: 'v1.1', componentsCount: 38, status: 'In Review', lastUpdated: '1 day ago' },
+  { id: 'bom-3', bomNumber: 'BOM-2026-089', title: 'Sensor Hub Array Subsystem', revision: 'v3.0', componentsCount: 86, status: 'Approved', lastUpdated: 'Oct 14, 2026' },
+  { id: 'bom-4', bomNumber: 'BOM-2026-104', title: 'Telemetry & Communication Module', revision: 'v0.8', componentsCount: 54, status: 'Draft', lastUpdated: 'Oct 10, 2026' },
+  { id: 'bom-5', bomNumber: 'BOM-2026-118', title: 'Chassis Structural Enclosure & Fasteners', revision: 'v1.5', componentsCount: 210, status: 'Approved', lastUpdated: 'Oct 02, 2026' }
+];
+
 export default function GlobalSearchClient() {
-  const [sidebarOpen, setSidebarOpen] = useState<boolean>(true);
+  // Left sidebar hidden by default
+  const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
   const [rightPanelOpen, setRightPanelOpen] = useState<boolean>(true);
   const [isProjectMenuOpen, setIsProjectMenuOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -180,6 +202,10 @@ export default function GlobalSearchClient() {
   const [selectedPreset, setSelectedPreset] = useState<PresetOption>(PRESET_OPTIONS[0]);
   const [isAiWriterActive, setIsAiWriterActive] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+
+  // BOM Search Panel State
+  const [showBomSearchPanel, setShowBomSearchPanel] = useState(false);
+  const [bomSearchQuery, setBomSearchQuery] = useState('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
@@ -251,7 +277,7 @@ export default function GlobalSearchClient() {
     setUploadedFiles([]);
     setIsThinking(true);
 
-    // Also insert record entry to table
+    // Insert record entry to table
     if (userMessageText) {
       const newRec: TableRecord = {
         id: `REC-${Math.floor(100 + Math.random() * 900)}`,
@@ -270,7 +296,7 @@ export default function GlobalSearchClient() {
       ]);
     }
 
-    // 2. Simulate AI Agents responding with bubble text
+    // 2. Simulate AI Agents responding
     setTimeout(() => {
       const responses = [
         `I've processed your query using the **${selectedPreset.title}** module. Here are key insights regarding your request: "_${userMessageText}_". I can generate concept drafts or perform deep analysis whenever you are ready!`,
@@ -306,9 +332,14 @@ export default function GlobalSearchClient() {
     rec.agent.toLowerCase().includes(tableFilter.toLowerCase())
   );
 
+  const filteredBoms = SAMPLE_BOM_DATA.filter(bom =>
+    bom.bomNumber.toLowerCase().includes(bomSearchQuery.toLowerCase()) ||
+    bom.title.toLowerCase().includes(bomSearchQuery.toLowerCase()) ||
+    bom.revision.toLowerCase().includes(bomSearchQuery.toLowerCase())
+  );
+
   return (
     <>
-      {}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@500;700;900&display=swap');
 
@@ -336,7 +367,6 @@ export default function GlobalSearchClient() {
         }
       `}</style>
 
-      {}
       <div className="relative flex h-screen w-full overflow-hidden bg-slate-50 text-slate-800 font-body antialiased selection:bg-red-500 selection:text-white">
         
         {/* Dynamic Background Mesh Gradient */}
@@ -346,7 +376,7 @@ export default function GlobalSearchClient() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/80 via-rose-50/20 to-slate-100/50" />
         </div>
 
-        {}
+        {/* Left Sidebar - Hidden by default */}
         <aside
           className={`relative z-20 flex flex-col border-r border-slate-200/80 bg-white/80 backdrop-blur-xl transition-all duration-300 ease-in-out ${
             sidebarOpen ? 'w-64 min-w-[16rem]' : 'w-0 min-w-0 border-r-0 overflow-hidden'
@@ -408,7 +438,7 @@ export default function GlobalSearchClient() {
           </div>
         </aside>
 
-        {}
+        {/* Main Content Area */}
         <main className="relative z-10 flex flex-1 flex-col h-full overflow-hidden">
           
           {/* Top Header */}
@@ -521,7 +551,7 @@ export default function GlobalSearchClient() {
                 )}
               </div>
 
-              {/* Button to toggle Table List container on the right */}
+              {/* Button to toggle Full Right Panel */}
               <button
                 onClick={() => setRightPanelOpen(!rightPanelOpen)}
                 className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all shadow-sm ${
@@ -537,32 +567,103 @@ export default function GlobalSearchClient() {
             </div>
           </header>
 
-          {}
+          {/* 2-Column Main Layout */}
           <div className="relative flex flex-1 overflow-hidden">
             
-            {/* Chat Container (Flex 1 - contracts when right panel opens) */}
+            {/* Column 1: Left-Aligned Chat Container */}
             <div className="relative flex flex-1 flex-col h-full overflow-hidden transition-all duration-300 ease-in-out">
               
-              {/* Chat Messages / Hero View */}
-              <div className="flex-1 overflow-y-auto px-4 pt-6 pb-40 custom-scrollbar">
+              {/* Scrollable Chat Area */}
+              <div className="flex-1 overflow-y-auto px-6 pt-6 pb-44 custom-scrollbar">
+                
+                {/* BOM Search Floating Panel Container */}
+                {showBomSearchPanel && (
+                  <div className="mb-6 w-full max-w-xl rounded-2xl border border-red-200 bg-white/95 p-4 shadow-xl backdrop-blur-md animate-in fade-in slide-in-from-top-4 duration-200">
+                    <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <Boxes className="h-4 w-4 text-red-600" />
+                        <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider font-title">
+                          BOM Specification Reference
+                        </h3>
+                      </div>
+                      <button
+                        onClick={() => setShowBomSearchPanel(false)}
+                        className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+
+                    {/* BOM Search Bar */}
+                    <div className="relative mt-3">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="Search by BOM #, Component title, or Revision..."
+                        value={bomSearchQuery}
+                        onChange={(e) => setBomSearchQuery(e.target.value)}
+                        className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2 pl-9 pr-3 text-xs font-medium text-slate-800 placeholder-slate-400 focus:border-red-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-red-100"
+                      />
+                    </div>
+
+                    {/* Results List */}
+                    <div className="mt-3 max-h-56 overflow-y-auto space-y-2 custom-scrollbar pr-1">
+                      {filteredBoms.length > 0 ? (
+                        filteredBoms.map((bom) => (
+                          <div
+                            key={bom.id}
+                            className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/60 p-2.5 hover:bg-red-50/50 hover:border-red-200 transition-all group"
+                          >
+                            <div className="min-w-0 pr-2">
+                              <div className="flex items-center gap-2">
+                                <span className="rounded bg-red-100 px-1.5 py-0.5 text-[10px] font-bold text-red-600 font-title">
+                                  {bom.bomNumber}
+                                </span>
+                                <span className="text-xs font-bold text-slate-800 truncate font-title group-hover:text-red-600 transition-colors">
+                                  {bom.title}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-2 text-[10px] text-slate-400 mt-1">
+                                <span>Rev: {bom.revision}</span>
+                                <span>•</span>
+                                <span>{bom.componentsCount} Parts</span>
+                                <span>•</span>
+                                <span>{bom.lastUpdated}</span>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => {
+                                setPromptText(`Reference Spec: [${bom.bomNumber}] ${bom.title} (${bom.revision})`);
+                                setShowBomSearchPanel(false);
+                              }}
+                              className="shrink-0 rounded-lg bg-white border border-slate-200 px-2.5 py-1 text-[11px] font-semibold text-slate-700 shadow-sm hover:border-red-300 hover:text-red-600 transition-all font-title"
+                            >
+                              Insert Reference
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="py-4 text-center text-xs text-slate-400">No matching BOM specifications found.</p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {messages.length === 0 ? (
-                  /* Hero View when no messages exist */
-                  <div className="flex h-full flex-col items-center justify-center text-center pb-12">
-                    <div className="max-w-xl space-y-3 px-4">
-                      <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900 font-title">
-                        
+                  /* Hero View */
+                  <div className="flex h-full flex-col justify-center text-left py-12 max-w-xl">
+                    <div className="space-y-3">
+                      <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 font-title">
+                        BOM Engineering Workspace
                       </h1>
-                      <p className="text-sm sm:text-base text-slate-500 font-medium">
-                        What can i help you today?{' '}
-                        <a href="#" className="font-semibold text-slate-800 hover:text-red-600 hover:underline transition-colors font-title">
-                          
-                        </a>
+                      <p className="text-sm text-slate-500 font-medium leading-relaxed">
+                        Query engineering assets, review component ECOs, or search BOM structures using AI agents.
                       </p>
                     </div>
                   </div>
                 ) : (
-                  /* Interactive Chat Flow with Speech Bubbles */
-                  <div className="mx-auto max-w-2xl space-y-6">
+                  /* Chat Bubbles Left-Aligned Layout */
+                  <div className="w-full max-w-2xl space-y-6">
                     {messages.map((msg) => (
                       <div
                         key={msg.id}
@@ -570,7 +671,7 @@ export default function GlobalSearchClient() {
                           msg.sender === 'user' ? 'items-end' : 'items-start'
                         }`}
                       >
-                        {/* User / AI Badge Header */}
+                        {/* User / AI Header */}
                         <div className="flex items-center gap-2 mb-1 px-1 text-[11px] font-medium text-slate-400">
                           {msg.sender === 'user' ? (
                             <>
@@ -591,15 +692,15 @@ export default function GlobalSearchClient() {
                           )}
                         </div>
 
-                        {/* Speech Text Bubble */}
+                        {/* Speech Bubble */}
                         <div
-                          className={`relative max-w-[88%] sm:max-w-[80%] rounded-3xl px-5 py-3.5 shadow-sm transition-all ${
+                          className={`relative max-w-[90%] sm:max-w-[85%] rounded-3xl px-5 py-3.5 shadow-sm transition-all ${
                             msg.sender === 'user'
                               ? 'bg-gradient-to-r from-red-600 to-rose-600 text-white rounded-tr-sm shadow-red-500/10'
                               : 'bg-white border border-slate-200/90 text-slate-800 rounded-tl-sm shadow-slate-200/50'
                           }`}
                         >
-                          {/* Attached File Badges inside Bubble */}
+                          {/* Attached File Badges */}
                           {msg.files && msg.files.length > 0 && (
                             <div className="mb-2 flex flex-wrap gap-1.5 border-b border-white/20 pb-2">
                               {msg.files.map((file, fIdx) => (
@@ -618,7 +719,7 @@ export default function GlobalSearchClient() {
                             {msg.text}
                           </p>
 
-                          {/* AI Response Tools Footer */}
+                          {/* AI Action Toolbar */}
                           {msg.sender === 'assistant' && (
                             <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2 text-xs text-slate-400">
                               <div className="flex items-center gap-2">
@@ -639,7 +740,7 @@ export default function GlobalSearchClient() {
                       </div>
                     ))}
 
-                    {/* Simulated AI Thinking Indicator */}
+                    {/* AI Thinking Indicator */}
                     {isThinking && (
                       <div className="flex flex-col items-start">
                         <div className="flex items-center gap-2 mb-1 px-1 text-[11px] font-medium text-slate-400">
@@ -662,11 +763,11 @@ export default function GlobalSearchClient() {
                 )}
               </div>
 
-              {/* Prompt Input Bar (Centered relative to the Chat Container) */}
-              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 w-full max-w-2xl px-4 z-30">
+              {/* Left-Aligned Prompt Input Bar */}
+              <div className="absolute bottom-6 left-6 right-6 max-w-2xl z-30">
                 <form onSubmit={handlePromptSubmit} className="relative rounded-3xl border border-slate-200/90 bg-white/95 p-4 shadow-2xl backdrop-blur-2xl ring-1 ring-slate-900/5">
                   
-                  {/* Uploaded Files Chips Preview */}
+                  {/* Uploaded Files Preview Chips */}
                   {uploadedFiles.length > 0 && (
                     <div className="flex flex-wrap gap-2 mb-2 px-1">
                       {uploadedFiles.map((file, index) => (
@@ -721,7 +822,7 @@ export default function GlobalSearchClient() {
                         <span>Attach</span>
                       </button>
 
-                      {/* Preset Selector Button & Popover */}
+                      {/* Preset Selector Popover */}
                       <div className="relative" ref={presetPopoverRef}>
                         <button
                           type="button"
@@ -733,7 +834,6 @@ export default function GlobalSearchClient() {
                           <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isPresetPopoverOpen ? 'rotate-180' : ''}`} />
                         </button>
 
-                        {/* Preset Options Popover Menu */}
                         {isPresetPopoverOpen && (
                           <div className="absolute bottom-full left-0 mb-2 w-72 rounded-2xl border border-slate-200/90 bg-white p-2 shadow-2xl backdrop-blur-xl z-50">
                             <div className="space-y-1">
@@ -790,9 +890,23 @@ export default function GlobalSearchClient() {
                         <BrainCircuit className="h-3.5 w-3.5 text-red-500" />
                         <span>Deep Analysis</span>
                       </button>
+
+                      {/* Get BOM Button */}
+                      <button
+                        type="button"
+                        onClick={() => setShowBomSearchPanel(!showBomSearchPanel)}
+                        className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-semibold transition-all shadow-sm ${
+                          showBomSearchPanel
+                            ? 'border-red-500 bg-red-50 text-red-600 ring-2 ring-red-100'
+                            : 'border-slate-200 bg-slate-50/80 text-slate-700 hover:bg-white hover:border-red-200 hover:text-red-600'
+                        }`}
+                      >
+                        <FileSearch className="h-3.5 w-3.5 text-red-500" />
+                        <span className="font-title">Get BOM</span>
+                      </button>
                     </div>
 
-                    {/* Right Side Controls: AI Writer & Submit */}
+                    {/* AI Writer & Submit Controls */}
                     <div className="flex items-center gap-2">
                       <button
                         type="button"
@@ -822,20 +936,20 @@ export default function GlobalSearchClient() {
 
             </div>
 
-            {}
+            {/* Column 2: Extended Full-Panel Right Sidebar */}
             <aside
               className={`relative z-20 flex flex-col border-l border-slate-200/80 bg-white/90 backdrop-blur-xl transition-all duration-300 ease-in-out ${
-                rightPanelOpen ? 'w-80 sm:w-96 min-w-[20rem]' : 'w-0 min-w-0 border-l-0 overflow-hidden'
+                rightPanelOpen ? 'w-full md:w-1/2 lg:w-3/5 min-w-[22rem]' : 'w-0 min-w-0 border-l-0 overflow-hidden'
               }`}
             >
-              <div className="flex h-full w-80 sm:w-96 flex-col overflow-hidden">
+              <div className="flex h-full w-full flex-col overflow-hidden">
                 
-                {/* Table Header Section */}
+                {/* Right Panel Header */}
                 <div className="flex shrink-0 items-center justify-between p-4 border-b border-slate-100">
                   <div className="flex items-center gap-2">
                     <TableIcon className="h-4 w-4 text-red-600" />
                     <h2 className="text-xs font-bold uppercase tracking-wider text-slate-700 font-title">
-                      Project Asset Records
+                      Project Asset & BOM Records
                     </h2>
                     <span className="rounded-full bg-red-100 px-2 py-0.5 text-[10px] font-bold text-red-600 font-title">
                       {records.length}
@@ -850,7 +964,7 @@ export default function GlobalSearchClient() {
                   </button>
                 </div>
 
-                {/* Table Controls (Filter & Export) */}
+                {/* Table Filter Controls */}
                 <div className="flex items-center justify-between gap-2 p-3 border-b border-slate-100 bg-slate-50/50">
                   <div className="relative flex-1">
                     <Filter className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-slate-400" />
@@ -859,7 +973,7 @@ export default function GlobalSearchClient() {
                       placeholder="Filter records..."
                       value={tableFilter}
                       onChange={(e) => setTableFilter(e.target.value)}
-                      className="w-full rounded-xl border border-slate-200 bg-white py-1 pl-8 pr-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-100"
+                      className="w-full rounded-xl border border-slate-200 bg-white py-1.5 pl-8 pr-3 text-xs font-medium text-slate-700 placeholder-slate-400 focus:border-red-400 focus:outline-none focus:ring-1 focus:ring-red-100"
                     />
                   </div>
                   <button
@@ -875,22 +989,23 @@ export default function GlobalSearchClient() {
                       };
                       setRecords([newSample, ...records]);
                     }}
-                    className="flex items-center gap-1 rounded-xl bg-slate-900 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-600 transition-colors shrink-0"
+                    className="flex items-center gap-1 rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-600 transition-colors shrink-0"
                     title="Add Entry"
                   >
                     <Plus className="h-3.5 w-3.5" />
-                    <span>Add</span>
+                    <span>Add Entry</span>
                   </button>
                 </div>
 
-                {/* Table List Scrollable Body */}
-                <div className="flex-1 overflow-y-auto custom-scrollbar p-2">
+                {/* Extended Table Data List */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar p-3">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="border-b border-slate-100 text-[11px] font-bold text-slate-400 uppercase tracking-wider font-title">
-                        <th className="pb-2 pt-1 px-2">Name / Details</th>
-                        <th className="pb-2 pt-1 px-2">Status</th>
-                        <th className="pb-2 pt-1 px-2 text-right">Actions</th>
+                        <th className="pb-2 pt-1 px-3">Name / Specification Details</th>
+                        <th className="pb-2 pt-1 px-3">Type</th>
+                        <th className="pb-2 pt-1 px-3">Status</th>
+                        <th className="pb-2 pt-1 px-3 text-right">Actions</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100">
@@ -899,8 +1014,8 @@ export default function GlobalSearchClient() {
                           key={record.id}
                           className="group hover:bg-red-50/40 transition-colors"
                         >
-                          <td className="py-2.5 px-2">
-                            <div className="flex items-start gap-2">
+                          <td className="py-3 px-3">
+                            <div className="flex items-start gap-2.5">
                               <FileText className="h-4 w-4 shrink-0 text-red-500 mt-0.5" />
                               <div className="min-w-0">
                                 <p className="text-xs font-bold text-slate-800 truncate group-hover:text-red-600 transition-colors font-title">
@@ -916,9 +1031,12 @@ export default function GlobalSearchClient() {
                               </div>
                             </div>
                           </td>
-                          <td className="py-2.5 px-2 shrink-0 align-top">
+                          <td className="py-3 px-3 text-xs font-medium text-slate-600">
+                            {record.type}
+                          </td>
+                          <td className="py-3 px-3 shrink-0 align-top">
                             <span
-                              className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                              className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[10px] font-bold ${
                                 record.status === 'Completed'
                                   ? 'bg-emerald-50 text-emerald-600 border border-emerald-200/60'
                                   : record.status === 'Processing'
@@ -929,7 +1047,7 @@ export default function GlobalSearchClient() {
                               {record.status}
                             </span>
                           </td>
-                          <td className="py-2.5 px-2 text-right align-top shrink-0">
+                          <td className="py-3 px-3 text-right align-top shrink-0">
                             <div className="flex items-center justify-end gap-1">
                               <button
                                 onClick={() => {
@@ -963,7 +1081,7 @@ export default function GlobalSearchClient() {
                   )}
                 </div>
 
-                {/* Table Footer Summary */}
+                {/* Right Panel Footer */}
                 <div className="border-t border-slate-100 p-3 bg-slate-50/50 text-[11px] text-slate-400 flex items-center justify-between font-title">
                   <span>Showing {filteredTableRecords.length} records</span>
                   <button

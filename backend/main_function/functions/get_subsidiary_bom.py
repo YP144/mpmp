@@ -5,7 +5,7 @@ import polars as pl
 from main_function.services.check_sso import SSO_NPDM
 
 
-def getPlantBOM(target_name):
+def getPlantBOM(target_name, bearerAuth: str):
     target_name_original = target_name
 
     target_parts = target_name.split(".")
@@ -27,14 +27,14 @@ def getPlantBOM(target_name):
     }
 
     try:
-        sso = SSO_NPDM()
-        is_logged_in = sso.auto_login(ssolgenet_cookie, smsession_cookie)
+        #sso = SSO_NPDM()
+        #is_logged_in = sso.auto_login(ssolgenet_cookie, smsession_cookie)
 
         reqURL = "https://npdm.lge.com/api/engineering/item/model/find-model-list-paging"
 
         headers = {
             "Accept": "application/json",
-            "Authorization": sso.auth_bearer,
+            "Authorization": bearerAuth,
             "BusinessUnit": "HE",
             "Content-Type": "application/json",
             "Referer": "https://npdm.lge.com/search/model",

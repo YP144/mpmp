@@ -283,12 +283,17 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
         });
     }, [userFilteredBomData, selectedYear]);
 
+    // Active KPI dataset excluding hidden NG rows (ensuring cards reflect 0 for NG items)
+    const activeKpiBomData = useMemo(() => {
+        return kpiFilteredBomData.filter(i => i.result !== 'NG');
+    }, [kpiFilteredBomData]);
+
     const systemUpdaterCount = useMemo(() => {
-        return userFilteredBomData.filter(item => isSystemUpdater(item)).length;
+        return userFilteredBomData.filter(item => isSystemUpdater(item) && item.result !== 'NG').length;
     }, [userFilteredBomData]);
 
     const liveActivityItems = useMemo(() => {
-        return kpiFilteredBomData.filter(item => {
+        return activeKpiBomData.filter(item => {
             const delay = item.bomDelayCount || 0;
             const isUrgentOrOverdue = delay > 0;
             
@@ -297,20 +302,27 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
 
             return isUrgentOrOverdue || isUnassignedOrNull;
         });
-    }, [kpiFilteredBomData]);
+    }, [activeKpiBomData]);
 
     const totalQueuePages = Math.ceil(liveActivityItems.length / queueItemsPerPage) || 1;
     const safeQueuePage = Math.min(queuePage, totalQueuePages);
     const paginatedQueueData = liveActivityItems.slice((safeQueuePage - 1) * queueItemsPerPage, safeQueuePage * queueItemsPerPage);
 
-    const totalBOM = kpiFilteredBomData.length;
-    const totalNG = kpiFilteredBomData.filter(i => i.result === 'NG').length;
-    const totalCheck = kpiFilteredBomData.filter(i => i.result === 'CHECK').length;
-    const noInitial = kpiFilteredBomData.filter(i => !i.engineerConfirmation || i.engineerConfirmation.trim() === '' || i.engineerConfirmation === '-').length;
-    const totalUnremarked = kpiFilteredBomData.filter(i => !i.remark || i.remark.trim() === '' || i.remark === '-').length;
-    const urgentCount = kpiFilteredBomData.filter(i => (i.bomDelayCount || 0) > 5).length; 
-    const overdueCount = kpiFilteredBomData.filter(i => (i.bomDelayCount || 0) > 0).length; 
-    const okCount = kpiFilteredBomData.filter(i => i.result === 'OK').length;
+    // KPI Card Counts (reflecting non-NG active view)
+    const totalBOM = activeKpiBomData.length;
+    const totalNG = 0; // Forced to 0 since NG rows are hidden from view
+    const totalCheck = activeKpiBomData.filter(i => i.result === 'CHECK').length;
+    
+    // No Initial count: rows where Initial Model is null, none, empty, '-', or 'cannot detected'
+    const noInitial = activeKpiBomData.filter(i => {
+        const init = (i.initialModel || '').trim().toLowerCase();
+        return !init || init === '-' || init === 'null' || init === 'none' || init === 'cannot detected' || init === 'no data';
+    }).length;
+
+    const totalUnremarked = activeKpiBomData.filter(i => !i.remark || i.remark.trim() === '' || i.remark === '-').length;
+    const urgentCount = activeKpiBomData.filter(i => (i.bomDelayCount || 0) > 5).length; 
+    const overdueCount = activeKpiBomData.filter(i => (i.bomDelayCount || 0) > 0).length; 
+    const okCount = activeKpiBomData.filter(i => i.result === 'OK').length;
 
     const parseDateValue = (dateStr: string): number | null => {
         if (!dateStr || dateStr === '-' || dateStr.toLowerCase() === 'n/a') return null;
@@ -346,15 +358,24 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
         const endTimestamp = endDate ? new Date(endDate).setHours(23, 59, 59, 999) : null;
 
         const items = userFilteredBomData.filter(item => {
+            // Requirement Fix: Hide all rows with 'NG' result in the MP Master table
+            if (item.result === 'NG') return false;
+
             if (selectedYear !== 'ALL') {
                 const itemYr = item.year || item.modelYear || '';
                 if (itemYr.trim() !== selectedYear) return false;
             }
 
             if (filter === 'OK' && item.result !== 'OK') return false;
-            if (filter === 'NG' && item.result !== 'NG') return false;
+            if (filter === 'NG') return false; // Force 'NG Only' to show no rows
             if (filter === 'CHECK' && item.result !== 'CHECK') return false;
-            if (filter === 'NO_INITIAL' && (item.engineerConfirmation && item.engineerConfirmation.trim() !== '' && item.engineerConfirmation !== '-')) return false;
+            
+            if (filter === 'NO_INITIAL') {
+                const init = (item.initialModel || '').trim().toLowerCase();
+                const isNoInit = !init || init === '-' || init === 'null' || init === 'none' || init === 'cannot detected' || init === 'no data';
+                if (!isNoInit) return false;
+            }
+
             if (filter === 'UNREMARKED' && (item.remark && item.remark.trim() !== '' && item.remark !== '-')) return false;
             if (filter === 'URGENT' && (item.bomDelayCount || 0) <= 5) return false;
             if (filter === 'OVERDUE' && (item.bomDelayCount || 0) <= 0) return false;
@@ -826,7 +847,7 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
     };
 
     const getFilterBannerText = () => {
-        const names: Record<string, string> = { 'OK': 'Status: OK Cleared', 'NG': 'Status: NG Rejections', 'CHECK': 'Status: Pending Check', 'NO_INITIAL': 'Unassigned (No Initial)', 'UNREMARKED': 'Unremarked (No Notes)', 'URGENT': 'Priority: Urgent Items', 'OVERDUE': 'SLA Status: Overdue Breached' };
+        const names: Record<string, string> = { 'OK': 'Status: OK Cleared', 'NG': 'Status: NG Rejections', 'CHECK': 'Status: Pending Check', 'NO_INITIAL': 'No Initial Model (Null/None/Cannot Detected)', 'UNREMARKED': 'Unremarked (No Notes)', 'URGENT': 'Priority: Urgent Items', 'OVERDUE': 'SLA Status: Overdue Breached' };
         let text = names[filter] || 'Custom Query Filter';
         if (selectedYear !== 'ALL') text += ` + Year: ${selectedYear}`;
         if (urgentOnly && filter !== 'URGENT') text += ' + Urgent Only';
@@ -840,13 +861,10 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
 
     return (
         <>
-            {/* Setinggi area konten: tabel utama mengisi sisa layar, pagination selalu terlihat.
-                Halaman baru bisa di-scroll kalau layar terlalu kecil (tabel punya tinggi minimal). */}
             <div id="dashboard-view" className={`w-full h-full flex-col ${viewResult ? 'hidden' : 'flex'}`}>
                 <div id="app-wrapper" className={`w-full h-full overflow-y-auto flex flex-col transition-all duration-300 ease-in-out ${isSidebarOpen ? 'lg:pr-[420px]' : ''}`}>
                     <main id="main-container" className="flex-1 min-h-full max-w-[1800px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-3 gap-3 flex flex-col">
                         
-                        {/* Filter tahun ditampilkan di header halaman (slot #page-header-actions di DashboardLayoutClient) */}
                         {headerSlot && createPortal(
                             <div className="flex items-center space-x-2">
                                 <span className="text-xs font-bold text-slate-500 hidden lg:inline">Filter Year:</span>
@@ -903,7 +921,7 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
                                             <span className="text-[11px] text-pantone-200/80 font-medium">Rejections</span>
                                         </div>
                                         <div className="mt-2.5 w-full bg-pantone-950/80 h-1.5 rounded-full overflow-hidden border border-pantone-700/50">
-                                            <div className="bg-pantone-300 h-full rounded-full" style={{ width: totalBOM ? `${(totalNG / totalBOM) * 100}%` : '0%' }}></div>
+                                            <div className="bg-pantone-300 h-full rounded-full" style={{ width: '0%' }}></div>
                                         </div>
                                     </div>
 
@@ -1144,7 +1162,7 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
                                                 <span className="w-2 h-2 rounded-full bg-emerald-500"></span><span>OK</span><span className="bg-emerald-100 text-emerald-800 text-[10px] px-1.5 py-0.5 rounded-md font-mono">{okCount}</span>
                                             </button>
                                             <button onClick={() => handleSetFilter('NG')} className={`tab-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-2 whitespace-nowrap ${filter === 'NG' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}>
-                                                <span className="w-2 h-2 rounded-full bg-pantone-700"></span><span>NG</span><span className="bg-pantone-100 text-pantone-800 text-[10px] px-1.5 py-0.5 rounded-md font-mono">{totalNG}</span>
+                                                <span className="w-2 h-2 rounded-full bg-pantone-700"></span><span>NG Only</span><span className="bg-pantone-100 text-pantone-800 text-[10px] px-1.5 py-0.5 rounded-md font-mono">0</span>
                                             </button>
                                             <button onClick={() => handleSetFilter('CHECK')} className={`tab-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center space-x-2 whitespace-nowrap ${filter === 'CHECK' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-600 hover:text-slate-900'}`}>
                                                 <span className="w-2 h-2 rounded-full bg-blue-500"></span><span>Check</span><span className="bg-blue-100 text-blue-800 text-[10px] px-1.5 py-0.5 rounded-md font-mono">{totalCheck}</span>
@@ -1196,7 +1214,6 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
                         </section>
 
                         {/* Complete Data Table */}
-                        {/* Mengisi sisa tinggi layar; min-h untuk layar kecil (halaman jadi bisa di-scroll) */}
                         <section className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col w-full flex-1 min-h-[300px]">
                             <div className="p-3 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between flex-wrap gap-3">
                                 <div className="flex items-center space-x-2">
@@ -1309,7 +1326,6 @@ export default function DashboardClient({ initialBomData, userName }: DashboardC
                                 </div>
                             </div>
 
-                            {/* Scroll tabel di sini (header tabel tetap terlihat), pagination di bawah tetap di tempat */}
                             <div className="overflow-auto w-full flex-1 min-h-0">
                                 <table className="w-full text-left text-xs border-collapse min-w-full">
                                     <thead className="sticky top-0 z-30">

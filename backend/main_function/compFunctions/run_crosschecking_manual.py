@@ -51,7 +51,6 @@ from main_function.functions.getdata import mongoURL
 from main_function.services.main_hwpart import targetpart_compare, developmentpart_compare, initialpart_compare
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from functions.get_tool_option import get_compare_tool_option_result
 from compFunctions.compareHWsingle import compare_hw_multi_process
 from compFunctions.compareHWmulti import compare_hw_single_process
 from compFunctions.compareSubs_New import compare_substitute_bom
@@ -851,6 +850,8 @@ def run_compare_json_manual(
             target_name=trget
         )
 
+
+        
 
         crosscheckResult = {
             "timestamp": current_time,

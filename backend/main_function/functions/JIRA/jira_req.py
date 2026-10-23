@@ -1,55 +1,39 @@
-
+import streamlit as st
 import requests
 import json
 
-jira_key = "ODA3Mzc0ODAwMTY1OlHLm3Hs4YgvWCnHbHahhbNr5O2D"
 
-def save_response_to_json(response, filename="output_all.json"):
-    """
-    Checks the response status and saves the data to a formatted JSON file if successful.
-    """
-    if response.status_code == 200:
-        try:
-            data = response.json()
-            print(json.dumps(data, indent=4))
-            
-            with open(filename, "w", encoding="utf-8") as file:
-                # ensure_ascii=False helps properly format non-English characters
-                json.dump(data, file, indent=4, ensure_ascii=False)
-                
-            print(f"Data successfully saved to {filename}")
-            
-        except json.JSONDecodeError:
-            print("Error: The response returned a 200 status, but the content is not valid JSON.")
-    else:
-        print(f"Error {response.status_code}: {response.text}")
+def get_jira_power_cons(API_KEY: str, model_name:str ):
+    # 1. Use your Jira token for authorization
+    headers = {
+        "Accept" : "*/*",
+        "Authorization": f"Bearer {API_KEY}",
+        #"Referer": "http://collab.lge.com/main/pages/viewpage.action?pageId=2053155392&spaceKey=~weapon.ahn&title=PC03%2BDownload%2BTV%2BEnergy%2BIssues"
+    }
 
-# 1. Use your Jira token for authorization
-headers = {
-    "Accept" : "application/json",
-    "Authorization": f"Bearer {jira_key}" 
-}
+    # 2. Target the Jira server with the correct /issue/ context path
+    url_jira = r"http://jira.lge.com/issue/rest/api/2/search"
+    url_jira_energy_issue = r"http://collab.lge.com/main/rest/jiraanywhere/1.0/jira/renderTable"
+    # (The rest of your headers, params, and requests.post code remains exactly the same)
 
-# 2. Target the Jira server with the correct /issue/ context path
-url_jira = r"http://jira.lge.com/issue/rest/api/2/search"
+    # 3. Use the standard Jira API payload format instead of wikiMarkup
+    params_jira = {
+        "jql": 'project = TVPDFT AND labels = GLZ AND labels = webOS26 AND text ~ "*" ORDER BY createdDate DESC',
+        "maxResults": 1000
+    }
 
-# (The rest of your headers, params, and requests.post code remains exactly the same)
+    params_jira_all = {"wikiMarkup":"<ac:structured-macro ac:name=\"jira\" ac:schema-version=\"1\"><ac:parameter ac:name=\"server\">NEXT JIRA</ac:parameter><ac:parameter ac:name=\"columns\">key,summary,type,created,updated,assignee,reporter,priority,status,resolution,labels</ac:parameter><ac:parameter ac:name=\"maximumIssues\">1000</ac:parameter><ac:parameter ac:name=\": = | TOKEN_TYPE | = :\">BLOCK</ac:parameter><ac:parameter ac:name=\"jqlQuery\">project = TVPDFT AND labels = GLZ AND labels = webOS27 ORDER BY createdDate DESC</ac:parameter></ac:structured-macro>","clearCache":"true"}
 
-# 3. Use the standard Jira API payload format instead of wikiMarkup
-params_jira = {
-    "jql": 'project = TVPDFT AND labels = GLZ AND labels = webOS26 AND text ~ "*" ORDER BY createdDate DESC',
-    "maxResults": 1000
-}
+    params_jira_standard = {
+        "jql": f"project = TVPDFT AND labels = GLZ AND labels = webOS27 AND text ~ '{model_name}' ORDER BY createdDate DESC",
+        "maxResults": 1000,
+    }
 
-# 4. Send the request
-response = requests.post(url_jira, headers=headers, json=params_jira)
+    # 4. Send the request
+    response_check_jira = requests.post(url_jira, headers=headers, json=params_jira_standard)
+    response_json = response_check_jira.json()
 
-print(f"Status Code: {response.status_code}")
+    #st.write(f"Status Code: {response_check_jira.status_code}")
+    #st.json(response_check_jira.json())
 
-if response.status_code == 200:
-    data = response.json()
-    print(json.dumps(data, indent=4))
-    
-    save_response_to_json(response, "my_custom_output.json")
-else:
-    print("Error:", response.text)
+    return response_json 

@@ -16,7 +16,7 @@
 
 
 #from streamlit_navigation_bar import st_navbar
-import pandas as pd
+import pandas as pd 
 import time
 import requests
 import json
@@ -35,6 +35,7 @@ import hashlib
 from pandas.io.formats.style import Styler
 import connectorx
 import traceback
+from decimal import Decimal
 from difflib import SequenceMatcher
 
 from main_function.services.check_sso import SSO_NPDM
@@ -591,6 +592,52 @@ def get_model_year(self, model_name):
             get_result_prefix = "HEROmodel2027Y_v1.0_v"
 
         return get_result_prefix
+
+
+def make_mongo_safe(obj):
+    if isinstance(obj, pl.DataFrame):
+        return make_mongo_safe(obj.to_dicts())
+
+    if isinstance(obj, pl.Series):
+        return make_mongo_safe(obj.to_list())
+
+    if isinstance(obj, dict):
+        return {
+            str(k): make_mongo_safe(v)
+            for k, v in obj.items()
+        }
+
+    if isinstance(obj, list):
+        return [make_mongo_safe(v) for v in obj]
+
+    if isinstance(obj, tuple):
+        return [make_mongo_safe(v) for v in obj]
+
+    if isinstance(obj, set):
+        return [make_mongo_safe(v) for v in obj]
+
+    if isinstance(obj, np.integer):
+        return int(obj)
+
+    if isinstance(obj, np.floating):
+        return float(obj)
+
+    if isinstance(obj, np.ndarray):
+        return make_mongo_safe(obj.tolist())
+
+    if isinstance(obj, Decimal):
+        return float(obj)
+
+    if isinstance(obj, (datetime, date)):
+        return obj
+
+    if obj is None or isinstance(obj, (str, int, float, bool)):
+        return obj
+
+    return str(obj)
+
+
+
 
 class ModelProfile():
     def __init__(self, targetModel: str, ssolgenet_cookie: str = "", smsession_cookie: str = ""):

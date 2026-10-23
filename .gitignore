@@ -1,5 +1,37 @@
+# Node / Next.js
 node_modules/
 .next/
+out/
+build/
+next-env.d.ts
+*.tsbuildinfo
+npm-debug.log*
+
+# Python
 .venv/
+venv/
+env/
 __pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Env & secret
+.env*
+*.pem
+
+# Log
+*.log
+
+# Output runtime (folder tetap ada lewat .gitkeep)
+/json/*
+!/json/.gitkeep
+/backend/json/*
+!/backend/json/.gitkeep
+/test_check/*
+!/test_check/.gitkeep
+
+# Editor / OS
 .vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -206,8 +206,8 @@ async def check_authentication(request: AuthUser):
         print(f"--- DEBUG /api/authentication received: userId={request.userId}, userIc={request.userIc} ---", flush=True)
         auth_state = check_user(userId=request.userIc, userIc=request.userId)
 
-
-        auth_state["userEmpNo"] = "IC130073"
+        # auth_state["userName"] = "ANNAS FURQON MAHDALI"
+        print(auth_state)
 
         return auth_state
     except Exception as e:

@@ -7,7 +7,8 @@ from psycopg2 import Error, sql
 
 from main_function.functions.getdata import masterDataURL
 from main_function.compFunctions.run_crosschecking_manual import run_compare_json_manual
-from main_function.compFunctions.run_crosschecking_mybom import run_compare_json_mybom
+from main_function.compFunctions.run_crosschecking_mybom_fx import run_compare_json_mybom
+
 
 def comapre_db_update(
     trget: str,
@@ -37,7 +38,7 @@ def comapre_db_update(
     # 1. Safely execute JSON comparison pipeline
     try:
         try:
-            crosscheckResult, GetTargetBOM, ebt_tool_option, master_tool_option = (
+            crosscheckResult, GetTargetBOM = (
                 run_compare_json_mybom(
                     trget,
                     dev,
@@ -47,7 +48,7 @@ def comapre_db_update(
                 )
             )
         except TypeError:
-            crosscheckResult, GetTargetBOM, ebt_tool_option, master_tool_option = (
+            crosscheckResult, GetTargetBOM = (
                 run_compare_json_mybom(trget, dev, init)
             )
     except Exception as pipe_err:

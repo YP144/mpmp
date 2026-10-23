@@ -1,35 +1,22 @@
-import io
-import requests
-import pandas as pd
-import polars as pl
 import json 
+import requests
 from pathlib import Path
-from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional
 from datetime import datetime
 import time
 import logging
 import traceback
 import threading
-from pymongo import MongoClient
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from main_function.services.check_sso import SSO_NPDM, NpdmClient
-from main_function.services.main_tooloption import run_tooloption, getToolinfo
-from main_function.services.subs_hwpart import run_subshwpart
 
-from main_function.compFunctions.check_parts import GetTargetParts
-from main_function.compFunctions.compareOperation import compare_operation
 from main_function.compFunctions.checx_eax_substitute import compare_under_eax
 from main_function.compFunctions.compare_prm import compare_chassis
 
-from main_function.functions.get_subsidiary_bom import getPlantBOM
 from main_function.functions.conditioning import zerobom_conditioning
-from main_function.functions.tool_option_logic import GetModelToolOptionMaster, ToolOptionCross, compare_tool_option_summary
 from main_function.functions.strucFucntions.quickCompare import get_structure_compare
-from main_function.functions.profiling.get_partInfo import (
-    get_eax_profile, get_ebt_profile
-)
-
+from main_function.functions.get_subsidiary_bom import getPlantBOM
+from compFunctions.compareOperation import compare_operation_new
 from main_function.functions.fast_profile import Fast_ModelProfile
 from main_function.functions.searchPart import get_part_profile
 from main_function.functions.fast_operationplan import GetOperationPart
@@ -48,8 +35,6 @@ from functions.get_hw_main_part import compare_hw_status_process
 
 from main_function.functions.datasend import send_to_pymongo, get_next_version_by_target
 from main_function.functions.getdata import mongoURL
-from main_function.services.main_hwpart import targetpart_compare, developmentpart_compare, initialpart_compare
-from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from functions.get_tool_option import get_compare_tool_option_result
 from compFunctions.compareHWsingle import compare_hw_multi_process
@@ -419,23 +404,6 @@ def run_compare_json_mybom(
                     )
 
                     continue
-        # ------------------------------------------------------------
-        # SLOW PART 2:
-        # ------------------------------------------------------------
-
-
-        def run_subshwpart_task():
-            start_time = time.perf_counter()
-            res = run_subshwpart().run()
-            record_time("Run Subs HW Part", start_time)
-            return res
-
-        with ThreadPoolExecutor(max_workers=2) as executor:
-            future_subshwpart = executor.submit(run_subshwpart_task)
-
-            subs_hwpart = future_subshwpart.result()
-
-        
  
  
     except requests.exceptions.RequestException as e:
@@ -462,8 +430,8 @@ def run_compare_json_mybom(
     DevBOM = DevBOM if DevBOM is not None else {}
     InitBOM = InitBOM if InitBOM is not None else {}
 
-    with open("test_check/output_test.json", "w", encoding="utf-8") as f:
-        json.dump(model_results, f, indent=4, ensure_ascii=False, default=str)
+    #with open("test_check/output_test.json", "w", encoding="utf-8") as f:
+    #    json.dump(model_results, f, indent=4, ensure_ascii=False, default=str)
 
     #with open("test_check/output_target.json", "w", encoding="utf-8") as f:
     #   json.dump(TargetBOM, f, indent=4, ensure_ascii=False, default=str)
@@ -473,7 +441,13 @@ def run_compare_json_mybom(
     GetTargetBOM, TargetName = zerobom_conditioning(TargetBOM)
     GetDevBOM, DevName = zerobom_conditioning(DevBOM)
     GetInitBOM, InitName = zerobom_conditioning(InitBOM)
+
+
+    #operatinJson, final_compare_result, result_check =  compare_operation_new(GetTargetBOM, trget)
     record_time("ZeroBOM Conditioning", start_zerobom)
+
+    start_model_state = time.perf_counter()
+    record_time("Model State Data", start_model_state)
 
     if TargetName == trget:
     
@@ -498,12 +472,12 @@ def run_compare_json_mybom(
 
         single_target, single_dev, single_init = hw_single_option_info(GetTargetBOM, GetDevBOM, GetInitBOM, bearerAuth)
         multi_target, multi_dev, multi_init = hw_multi_option_info(GetTargetBOM, GetDevBOM, GetInitBOM, bearerAuth)
+        operationJson, final_output_df, result_check, get_operation_part = compare_operation_new(GetTargetBOM, trget)
 
         substitute_df, substitute_dict = compare_substitute_bom(
             target=GetTargetBOM,
             dev=GetDevBOM,
             init=GetInitBOM
-            
         )
         
 
@@ -529,64 +503,12 @@ def run_compare_json_mybom(
             record_time("Structure Compare", start_time)
             return res
 
-        def task_compare_ben():
-            start_time = time.perf_counter()
-            res = compareBEN_compare()
-            record_time("BEN Compare", start_time)
-            return res
-
-        def task_compare_ben_tool():
-            start_time = time.perf_counter()
-            res = compareBENtool()
-            record_time("BEN Tool Compare", start_time)
-            return res
-
-        def task_compare_hwtool():
-            start_time = time.perf_counter()
-            res = compare_hwtool()
-            record_time("HW Tool Compare", start_time)
-            return res
-
-        def task_compare_substitute():
-            start_time = time.perf_counter()
-            res = compare_substitute()
-            record_time("Substitute Compare", start_time)
-            return res
-
-        def task_compare_hwmulti():
-            start_time = time.perf_counter()
-            res = compare_hwmulti()
-            record_time("HW Single Option", start_time)
-            return res
-
-        def task_compare_hw_multiopt():
-            start_time = time.perf_counter()
-            res = comparehw_multiopt()
-            record_time("HW Multi Option", start_time)
-            return res
-
-        def task_compare_operation():
-            start_time = time.perf_counter()
-            res = compare_operation(
-                GetTargetBOM, 
-                trget, 
-                ssolgenet_cookie=ssolgenet, 
-                smsession_cookie=smsession
-            )
-            record_time("Operation Compare", start_time)
-            return res
-
-        def task_compare_tool_option():
-            start_time = time.perf_counter()
-            res = compare_tool_option_summary(GetTargetBOM, target_model, bearerAuth)
-            record_time("Tool Master Compare", start_time)
-            return res
-
         def task_compare_eax_substitute():
             start_time = time.perf_counter()
             res = compare_under_eax(GetTargetBOM, GetProfile.GetSoC)
             record_time("EAX Substitute Compare", start_time)
             return res
+
 
         def task_compare_chassis():
             start_time = time.perf_counter()
@@ -597,17 +519,10 @@ def run_compare_json_mybom(
 
         with ThreadPoolExecutor(max_workers=11) as executor:
             future_get_structure_compare = executor.submit(task_structure_checkin)
-            future_ben = executor.submit(task_compare_ben)
-            future_ben_tool = executor.submit(task_compare_ben_tool)
-            future_hwtool = executor.submit(task_compare_hwtool)
-            future_substitute = executor.submit(task_compare_substitute)
-            future_hwmulti = executor.submit(task_compare_hwmulti)
-            future_hw_multiopt = executor.submit(task_compare_hw_multiopt)
-            future_compare_operation = executor.submit(task_compare_operation)
-            future_tool_option_summary = executor.submit(task_compare_tool_option)
-            future_compare_eax_substitute = executor.submit(task_compare_eax_substitute)
+            future_compare_eax_substitute = executor.submit(task_compare_eax_substitute)      
             future_compare_chassis = executor.submit(task_compare_chassis)
-            
+
+            #structure compare
             structure_data = safe_future(
                 future_get_structure_compare,
                 "Structure Compare",
@@ -627,152 +542,6 @@ def run_compare_json_mybom(
                 json_data = {}
                 compare_matching = []
                 result_check = "NG"
-
-
-            ben_data = safe_future(
-                future_ben,
-                "BEN Compare",
-                execution_log,
-                exception_log
-            )
-
-            if ben_data:
-                final_df, final_json, ben_result = ben_data
-            else:
-                final_df = None
-                final_json = {}
-                ben_result = "CHECK"
-
-
-            tool_data = safe_future(
-                future_ben_tool,
-                "BEN Tool Compare",
-                execution_log,
-                exception_log
-            )
-
-            if tool_data:
-                tooloption_compare_df, tooloption_json = tool_data
-            else:
-                tooloption_compare_df = None
-                tooloption_json = {}
-
-
-            hwtool_data = safe_future(
-                future_hwtool,
-                "HW Tool Compare",
-                execution_log,
-                exception_log
-            )
-
-            if hwtool_data:
-                (
-                    df_final_partstatus,
-                    df_partStatus_json,
-                    subs_hwtool_check
-                ) = hwtool_data
-            else:
-                df_final_partstatus = None
-                df_partStatus_json = {}
-                subs_hwtool_check = "CHECK"
-
-
-            subs_data = safe_future(
-                future_substitute,
-                "Substitute Compare",
-                execution_log,
-                exception_log
-            )
-
-            if subs_data:
-                (
-                    df_final_subs,
-                    df_subs_json,
-                    subsitute_check_result
-                ) = subs_data
-            else:
-                df_final_subs = None
-                df_subs_json = {}
-                subsitute_check_result = "CHECK"
-
-
-            single_data = safe_future(
-                future_hwmulti,
-                "HW Single Option",
-                execution_log,
-                exception_log
-            )
-
-            if single_data:
-                (
-                    df_final_singelopt,
-                    json_final_singelopt,
-                    hwmulti_result
-                ) = single_data
-            else:
-                hwmulti_result = "CHECK"
-                json_final_singelopt = {}
-
-            #multi option data compare
-            multi_data = safe_future(
-                future_hw_multiopt,
-                "HW Multi Option",
-                execution_log,
-                exception_log
-            )
-
-            if multi_data:
-                (
-                    df_final_multiopt,
-                    json_final_multiopt,
-                    hwsingle_result
-                ) = multi_data
-            else:
-                hwsingle_result = "CHECK"
-                json_final_multiopt = {}
-
-            #operation master data compare
-            operation_data = safe_future(
-                future_compare_operation,
-                "Operation Compare",
-                execution_log,
-                exception_log
-            )
-
-            if operation_data:
-                (
-                    columnsOp,
-                    dej_operation,
-                    target_operation,
-                    operationResult,
-                    operationJson,
-                    op_result
-                ) = operation_data
-            else:
-                operationJson = {}
-                op_result = "NG"
-
-            #tool option master data compare
-            toolmaster_data = safe_future(
-                future_tool_option_summary,
-                "Tool Master Compare",
-                execution_log,
-                exception_log
-            )
-
-            if toolmaster_data:
-                (
-                    ebt_tool_option,
-                    master_tool_option,
-                    ebt_tool_json,
-                    result_toolMaster
-                ) = toolmaster_data
-            else:
-                ebt_tool_option = None
-                master_tool_option = None
-                ebt_tool_json = {}
-                result_toolMaster = "NG"
-
 
             #eax_subsititute compare
             eax_substitute_data = safe_future(
@@ -805,24 +574,25 @@ def run_compare_json_mybom(
 
         targetProfile = GetProfile.jsonProfile
 
+"
+        subsitute_check_result = "CHECK"
         subs_table_result = (
             "CHECK"
-            if subs_hwtool_check == "CHECK" or subsitute_check_result == "CHECK"
+            if subsitute_check_result == "CHECK"
             else "OK"
         )
-
+    
         hwoption_table_result = (
             "CHECK"
             if hwmulti_result == "CHECK" or hwsingle_result == "CHECK"
             else "OK"
         )
-        
+    
         overall_table_result = (
             "NG"
-            if result_check == "NG" or result_toolMaster == "NG" or op_result == "NG"
+            if result_check == "NG" or op_result == "NG"
             else "OK"
             )
-
         #Jusgement with Notes
 
         ng_reasons = []
@@ -830,10 +600,8 @@ def run_compare_json_mybom(
 
         checks = {
             "Structure": result_check,
-            "HW Compare": ben_result,
             "Substitution Compare": subs_table_result,
             "Multi Option": hwoption_table_result,
-            "Tool Option Master": result_toolMaster,
             "Operation Plan": op_result,
         }
 
@@ -876,86 +644,75 @@ def run_compare_json_mybom(
 
 
         crosscheckResult = {
-            "timestamp": current_time,
-            "version": next_version,
-            "modifier": modifier_name,   # <--- TAMBAHKAN BARIS INI DI SINI
-            "targetName": trget,
-            "devName": dev,
-            "initName": init,
-            "resultView": overall_table_result,
-            "userData": {
-                "userID": user_id,
-                "userIC": user_ic
-            },
-            "prm_check": {
-                "chassis": compare_chassis_json,
-            },
-            "ModelProfile": {
-                "profileData": targetProfile,
-            },
-            "structureCompare": {
-                "result": compare_matching
-            },
-
-            "benComapre": {
-                "compareHW": final_json,
-                "compareTool": tooloption_json,
-            },
-            "subsCheck": {
-                "partStatus": df_partStatus_json,
-                "subsJson": df_subs_json,
-            },
-            "multiOption": {
-                "singleOpt": json_final_singelopt,
-                "multiOpt": json_final_multiopt,
-            },
-            "toolOptCompare": {
-                "summaryTool": ebt_tool_json,
-                "toolSummary": None,
-            },
-            "eaxSubstitute": eax_substitute_json,
-            "OperationPlan": {
-                "OperationCheck": operationJson,
-            },
-            "HWpartCheck" : {
-                "chassisName" : compare_chassis_json,
-                "ebt_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBT"),
-                "ebr_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBR"),
-                "eax_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EAX"),
-                "ebu_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBU"),
-                "ead_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EAD")
-            },
-            "SummaryResult": {
-                "Structure": result_check,
-                "HWcompare": ben_result,
-                "subsCompare": subs_table_result,
-                "multiOption": hwoption_table_result,
-                "tooloptionMaster": result_toolMaster,
-                "operationPlan": op_result,
-                "overallResult": overall_table_result,
-                "compareNote": overall_remark
-            },
-            "SubsidiaryBOM": {
-                "modelName": model_name,
-                "PlantBOM": subsidiaryDicts
-            },
-            "ExecutionSummary": {
-                "startTime": run_start_time.isoformat(),
-                "finishTime": run_finish_time.isoformat(),
-                "durationSeconds": duration_seconds,
-                "successfulStages": successful_stages,
-                "failedStages": failed_stages,
-                "warningStages": len(exception_log)
-            },
+                "timestamp": current_time,
+                "version": next_version,
+                "modifier": modifier_name,   # <--- TAMBAHKAN BARIS INI DI SINI
+                "targetName": trget,
+                "devName": dev,
+                "initName": init,
+                "modelState": "release",
+                "changeNo": "1.0",
+                "prm_check": {
+                    "chassis": compare_chassis_json,
+                },
+                "ModelProfile": {
+                    "profileData": targetProfile,
+                },
+                "structureCompare": {
+                    "result": compare_matching
+                },
+                "ToolOption": {
+                    "compareTool": tool_option_output,
+                },
+                "subsCheck": {
+                    "HWpartStatus": compare_hw_dict,
+                    "subsJson": substitute_dict,
+                },
+                "multiOption": {
+                    "singleOpt": hw_single_dict,
+                    "multiOpt": hw_multi_dict,
+                },
+                "eaxSubstitute": eax_substitute_json,
+                "OperationPlan": {
+                    "OperationCheck": operationJson,
+                },
+                "HWpartCheck" : {
+                    "chassisName" : compare_chassis_json,
+                    "ebt_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBT"),
+                    "ebr_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBR"),
+                    "eax_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EAX"),
+                    "ebu_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EBU"),
+                    "ead_profile": get_part_profile(get_part_list=TargetBOM, part_ref="EAD")
+                },
+                "SummaryResult": {
+                    "Structure": result_check,
+                    "subsCompare": subs_table_result,
+                    "multiOption": hwoption_table_result,
+                    "operationPlan": op_result,
+                    "overallResult": overall_table_result,
+                    "compareNote": overall_remark
+                },
+                "SubsidiaryBOM": {
+                    "modelName": model_name,
+                    "PlantBOM": subsidiaryDicts
+                },
+                "ExecutionSummary": {
+                    "startTime": run_start_time.isoformat(),
+                    "finishTime": run_finish_time.isoformat(),
+                    "durationSeconds": duration_seconds,
+                    "successfulStages": successful_stages,
+                    "failedStages": failed_stages,
+                    "warningStages": len(exception_log)
+                },
+                
+                # --- NEW: Added timeProcessing right below ExecutionSummary ---
+                "timeProcessing": time_processing,
+        
+                "ExecutionLog": execution_log,
+        
+                "ExceptionLog": exception_log,
+            }
             
-            # --- NEW: Added timeProcessing right below ExecutionSummary ---
-            "timeProcessing": time_processing,
-
-            "ExecutionLog": execution_log,
-
-            "ExceptionLog": exception_log,
-        }
-
         
 
         run_stage(
@@ -965,7 +722,7 @@ def run_compare_json_mybom(
             lambda: send_to_pymongo(crosscheckResult)
         )
 
-        return crosscheckResult,GetTargetBOM, ebt_tool_option, master_tool_option
+        return crosscheckResult,GetTargetBOM
 
     else:
         print(f"Error: Target Model {trget}, but API return {TargetName}")

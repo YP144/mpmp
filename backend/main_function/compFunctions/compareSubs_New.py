@@ -183,12 +183,16 @@ def compare_substitute_bom(target: pl.DataFrame, dev: pl.DataFrame, init: pl.Dat
         pl.col("init_category").fill_null("").is_in(uncategorized_targets)
     )
 
+    result_df = "TRIAL"
+
     # Keep rows where at least one environment has a valid category or missing entry
     combined_df = combined_df.filter(~is_all_uncategorized)
 
     # 6. Fill remaining null values with empty strings
     combined_df = combined_df.fill_null("")
 
+
+
     combined_dict = combined_df.to_dicts()
 
-    return combined_df, combined_dict
+    return combined_df, combined_dict, result_df

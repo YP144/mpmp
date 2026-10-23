@@ -274,8 +274,6 @@ const BOM_COLUMN_GROUPS: Record<string, { label: string; columns: string[] }> = 
   },
 };
 
-// Tab aktif disimpan di URL (?tab=team / tool / analytics). Tab default "bom" tidak ditulis ke URL.
-// 'tool' (Tool Option Master MP) sementara tidak dimasukkan karena tab-nya disembunyikan
 const GLOBAL_TABS: (TabKey | 'analytics')[] = ['team', 'bom', 'analytics'];
 const DEFAULT_GLOBAL_TAB: TabKey = 'bom';
 
@@ -309,20 +307,12 @@ export default function DashboardPage() {
   });
   const [isGroupDropdownOpen, setIsGroupDropdownOpen] = useState<boolean>(false);
 
-  // Sama seperti handleTabSwitch: tab Team memakai filter tahun "ALL"
   const [yearFilter, setYearFilter] = useState<string>(() => (currentTab === 'team' ? 'ALL' : getDefaultYearCode()));
 
-  // Simpan tab aktif ke URL (replace: tidak menambah riwayat Back browser)
   useEffect(() => {
     updateUrlParams({ tab: currentTab === DEFAULT_GLOBAL_TAB ? null : currentTab });
   }, [currentTab]);
 
-  // ==========================================
-  // Drawer Record Details disimpan di URL (?row=...)
-  // - Tab Master MP BOM : nama MP model
-  // - Tab lain          : nilai kolom pertama tabel (kolom urutan / ID dari database)
-  // Data diambil async, jadi drawer dibuka lagi setelah data selesai dimuat.
-  // ==========================================
   const getRowUrlKey = (row: Record<string, any> | null, tab: TabKey | 'analytics'): string => {
     if (!row) return '';
     if (tab === 'bom') return String(getFieldValue(row, ['mp model', 'mp_model', 'mpModel'], '') ?? '').trim();
@@ -330,7 +320,6 @@ export default function DashboardPage() {
     return firstColumn ? String(row[firstColumn] ?? '').trim() : '';
   };
 
-  // Nilai ?row= dari URL yang belum dipulihkan (null = sudah selesai)
   const pendingRowKey = React.useRef<string | null>(searchParams.get('row'));
 
   useEffect(() => {
@@ -341,14 +330,13 @@ export default function DashboardPage() {
     const found = rows.find((r) => getRowUrlKey(r, currentTab) === key);
     if (found) setSelectedRow(found);
     else updateUrlParams({ row: null });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading, currentTab, teamState, bomState]);
 
   useEffect(() => {
-    if (pendingRowKey.current) return; // tunggu pemulihan dari URL selesai dulu
+    if (pendingRowKey.current) return;
     updateUrlParams({ row: getRowUrlKey(selectedRow, currentTab) || null });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedRow, currentTab]);
+
   const [teamFilter, setTeamFilter] = useState<string>('ALL');
   const [partFilter, setPartFilter] = useState<string>('ALL');
   const [inchFilter, setInchFilter] = useState<string>('ALL');
@@ -440,7 +428,6 @@ export default function DashboardPage() {
     if (devModel && devModel !== 'N/A') queryParams.set('devModel', devModel);
     if (initModel && initModel !== 'N/A') queryParams.set('initModel', initModel);
 
-    // Satu halaman hasil untuk semua user; mode Edit / View only ditentukan di /viewResult
     window.open(`/viewResult?${queryParams.toString()}`, '_blank');
   };
 
@@ -733,7 +720,6 @@ export default function DashboardPage() {
     return Array.from(new Set(values));
   }, [teamState]);
 
-  // Dynamic filter dropdown options for BOM
   const uniqueInches = useMemo(() => {
     if (!bomState.rows) return [];
     const values = bomState.rows
@@ -880,6 +866,14 @@ export default function DashboardPage() {
     if (currentTab === 'analytics') return [];
 
     let rows = activeDataset.rows.filter((row) => {
+      // Hide all rows with 'NG' in MP Master table when on 'bom' tab (unless strict NG filter is active)
+      if (currentTab === 'bom' && quickStatusFilter !== 'NG') {
+        const resultVal = String(getFieldValue(row, ['result'], '')).trim().toUpperCase();
+        if (resultVal.includes('NG')) {
+          return false;
+        }
+      }
+
       let matchYear = true;
       if (yearFilter !== 'ALL') {
         const yearKey = Object.keys(row).find((k) =>
@@ -987,6 +981,11 @@ export default function DashboardPage() {
 
       return matchYear && matchTeam && matchPart && matchInch && matchRegion && matchSeries && matchPlant && matchStatusFilter && matchSearch && matchDateRange;
     });
+
+    // If 'NG Only' filter is active, return an empty array to show no rows
+    if (currentTab === 'bom' && quickStatusFilter === 'NG') {
+      return [];
+    }
 
     if (currentTab === 'bom' && isLatestDateFirst) {
       rows = [...rows].sort((a, b) => {
@@ -1118,7 +1117,6 @@ export default function DashboardPage() {
 
   return (
     <div className="relative w-full h-full flex-1 overflow-x-hidden overflow-y-auto font-sans antialiased text-stone-800 bg-stone-100 flex flex-col box-border">
-      {/* Loading saat mengambil seluruh data BOM (buka halaman pertama kali / tombol refresh) */}
       {isLoading && (
         <div className="absolute inset-0 z-30 bg-stone-100/75 backdrop-blur-[2px]" role="status" aria-live="polite">
           <div className="sticky top-[30vh] flex justify-center px-4">
@@ -1140,7 +1138,6 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* Top Header */}
       <header className="bg-gradient-to-r from-[#6e0717] via-[#C8102E] to-[#6e0717] text-white px-4 py-2 flex-none shadow-md border-b-2 border-[#D4AF37] flex items-center justify-between z-10 w-full">
         <div className="flex items-center space-x-3">
           <h1 className="text-xs sm:text-sm font-extrabold tracking-wider uppercase flex items-center gap-2">
@@ -1159,11 +1156,8 @@ export default function DashboardPage() {
         </div>
       </header>
 
-      {/* Area isi + drawer Record Details. Drawer setinggi area ini: dari bawah header merah sampai bawah layar */}
       <div className="relative flex-1 min-h-0 flex w-full">
-      {/* Main Container (scroll sendiri hanya kalau layar terlalu kecil) */}
       <div className="flex-1 flex flex-col p-3 space-y-3 overflow-y-auto min-w-0 max-w-full box-border">
-        {/* Hardware Dynamic Summary Matrix */}
         <section className="bg-white rounded-xl shadow-sm border border-[#EBD99A] flex-none overflow-hidden flex flex-col w-full">
           <div className="px-3 py-2 bg-stone-900 text-white flex flex-row items-center justify-between border-b border-[#D4AF37]/50 flex-wrap gap-2">
             <div className="flex items-center space-x-2">
@@ -1233,7 +1227,6 @@ export default function DashboardPage() {
           )}
         </section>
 
-        {/* Navigation Tabs */}
         <nav className="bg-white rounded-xl border border-[#EBD99A] shadow-sm px-3 flex-none w-full max-w-full">
           <div className="flex space-x-4 overflow-x-auto custom-scrollbar">
             <button onClick={() => handleTabSwitch('bom')} className={`py-2.5 text-xs transition flex items-center space-x-1.5 whitespace-nowrap cursor-pointer font-bold ${currentTab === 'bom' ? 'border-b-2 border-[#C8102E] text-[#C8102E] bg-[#FDF2F4]' : 'text-stone-600 border-b-2 border-transparent hover:text-[#C8102E]'}`}>
@@ -1241,15 +1234,6 @@ export default function DashboardPage() {
               <span>Master MP BOM</span>
             </button>
           
-            {/* Tab Tool Option Master MP: disembunyikan sementara (belum dibutuhkan), JANGAN dihapus.
-                Untuk menampilkan lagi: hapus komentar ini & tambahkan 'tool' kembali ke GLOBAL_TABS.
-            <button onClick={() => handleTabSwitch('tool')} className={`py-2.5 text-xs transition flex items-center space-x-1.5 whitespace-nowrap cursor-pointer font-bold ${currentTab === 'tool' ? 'border-b-2 border-[#C8102E] text-[#C8102E] bg-[#FDF2F4]' : 'text-stone-600 border-b-2 border-transparent hover:text-[#C8102E]'}`}>
-              <Wrench className="w-4 h-4" />
-              <span>Tool Option Master MP</span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded-full border ${currentTab === 'tool' ? 'bg-[#FBF8EB] text-[#6e0717] border-[#EBD99A]' : 'bg-stone-100 text-stone-700 border-stone-200'}`}>{toolData.length}</span>
-            </button>
-            */}
-
             <button onClick={() => handleTabSwitch('team')} className={`py-2.5 text-xs transition flex items-center space-x-1.5 whitespace-nowrap cursor-pointer font-bold ${currentTab === 'team' ? 'border-b-2 border-[#C8102E] text-[#C8102E] bg-[#FDF2F4]' : 'text-stone-600 border-b-2 border-transparent hover:text-[#C8102E]'}`}>
               <Users className="w-4 h-4" />
               <span>HW Team Members</span>
@@ -1263,14 +1247,10 @@ export default function DashboardPage() {
           </div>
         </nav>
 
-        {/* Lower Flexible Layout Wrapper */}
-        {/* Tinggi mengikuti sisa layar (tabel + pagination selalu terlihat); min-h untuk layar kecil -> halaman bisa di-scroll */}
         <div className="flex-1 min-h-[460px] flex flex-col overflow-hidden w-full max-w-full">
-          {/* Main Content Area */}
           <main className="flex-1 flex flex-col space-y-3 overflow-hidden min-w-0 max-w-full">
             {currentTab === 'analytics' ? (
               <div className="flex-1 overflow-y-auto space-y-4 pr-1 custom-scrollbar">
-                {/* Analytics Header Controls */}
                 <header className="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-white p-3 rounded-2xl shadow-xs border border-red-100">
                   <div className="flex flex-wrap items-center gap-2">
                     <div className="relative">
@@ -1350,7 +1330,6 @@ export default function DashboardPage() {
                   </div>
                 </header>
 
-                {/* KPI Metric Cards */}
                 {showKpiCards && (
                   <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
                     <div className="bg-white p-3 rounded-2xl shadow-xs border border-red-100">
@@ -1412,7 +1391,6 @@ export default function DashboardPage() {
                   </section>
                 )}
 
-                {/* Overdue and Urgent Tables */}
                 <section className="grid grid-cols-1 lg:grid-cols-2 gap-3">
                   <div className="bg-white p-3 rounded-2xl shadow-xs border border-red-100 flex flex-col">
                     <div className="flex items-center justify-between mb-2 pb-2 border-b border-stone-100">
@@ -1723,7 +1701,6 @@ export default function DashboardPage() {
                     </div>
                   </div>
 
-                  {/* Status Toolbar Buttons */}
                   <div className="flex items-center space-x-1.5 pt-1 border-t border-stone-100 overflow-x-auto w-full custom-scrollbar">
                     <span className="text-[10px] font-extrabold text-stone-400 uppercase tracking-wider whitespace-nowrap">Quick Status Filters:</span>
 
@@ -1775,36 +1752,8 @@ export default function DashboardPage() {
                       </button>
                     )}
                   </div>
-
-                  {/* Popup Active Status Summary Banner */}
-                  {['OK', 'CHECK', 'NG'].includes(quickStatusFilter) && (
-                    <div className="flex items-center justify-between bg-stone-50 border border-stone-200 rounded-lg p-2 shadow-xs transition-all w-full flex-wrap gap-2">
-                      <div className="flex items-center space-x-1.5 text-xs font-extrabold text-stone-700">
-                        <Filter className="w-3.5 h-3.5 text-[#C8102E]" />
-                        <span>Active Filter Breakdown ({quickStatusFilter} Selected):</span>
-                      </div>
-
-                      <div className="flex items-center space-x-1.5 text-xs flex-wrap gap-1">
-                        <span className={`px-2 py-0.5 rounded-md font-bold flex items-center space-x-1 border ${quickStatusFilter === 'OK' ? 'bg-emerald-600 text-white border-emerald-700 shadow-xs' : 'bg-emerald-50 text-emerald-800 border-emerald-200'}`}>
-                          <CheckCircle2 className="w-3 h-3" />
-                          <span>OK: <strong>{quickStatusCounts.okCount}</strong> rows</span>
-                        </span>
-
-                        <span className={`px-2 py-0.5 rounded-md font-bold flex items-center space-x-1 border ${quickStatusFilter === 'CHECK' ? 'bg-amber-500 text-white border-amber-600 shadow-xs' : 'bg-amber-50 text-amber-800 border-amber-200'}`}>
-                          <AlertCircle className="w-3 h-3" />
-                          <span>CHECK: <strong>{quickStatusCounts.checkCount}</strong> rows</span>
-                        </span>
-
-                        <span className={`px-2 py-0.5 rounded-md font-bold flex items-center space-x-1 border ${quickStatusFilter === 'NG' ? 'bg-[#C8102E] text-white border-[#9E0B22] shadow-xs' : 'bg-red-50 text-red-800 border-red-200'}`}>
-                          <XCircle className="w-3 h-3" />
-                          <span>NG: <strong>{quickStatusCounts.ngCount}</strong> rows</span>
-                        </span>
-                      </div>
-                    </div>
-                  )}
                 </section>
 
-                {/* Master Table Area */}
                 <section className="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden flex-1 flex flex-col min-h-[260px] w-full max-w-full">
                   <div className="flex-1 overflow-x-auto overflow-y-auto relative custom-scrollbar w-full max-w-full">
                     <table className="w-full text-left border-collapse min-w-full">
@@ -1851,7 +1800,6 @@ export default function DashboardPage() {
                     )}
                   </div>
 
-                  {/* Pagination Footer */}
                   <div className="bg-stone-50 px-3 py-2 border-t border-stone-200 flex items-center justify-between flex-none text-xs text-stone-600 flex-wrap gap-2 w-full">
                     <div className="flex items-center space-x-1.5">
                       <span>Show</span>
@@ -1888,224 +1836,215 @@ export default function DashboardPage() {
               </>
             )}
           </main>
-          
         </div>
       </div>
 
-      {/* Drawer Details View (Record Details) */}
-          {selectedRow && currentTab !== 'analytics' && (
-            <aside className="absolute xl:static inset-y-0 right-0 z-20 w-80 max-w-full bg-white border-l border-stone-200 shadow-2xl xl:shadow-none flex flex-col flex-none overflow-hidden">
-              <div className="bg-gradient-to-r from-[#6e0717] to-[#C8102E] text-white px-3 py-2 flex items-center justify-between border-b border-[#D4AF37] flex-none">
-                <div className="flex items-center space-x-2">
-                  <FileText className="w-4 h-4 text-[#D4AF37]" />
-                  <h3 className="text-xs font-extrabold uppercase tracking-wider">Record Details</h3>
+      {selectedRow && currentTab !== 'analytics' && (
+        <aside className="absolute xl:static inset-y-0 right-0 z-20 w-80 max-w-full bg-white border-l border-stone-200 shadow-2xl xl:shadow-none flex flex-col flex-none overflow-hidden">
+          <div className="bg-gradient-to-r from-[#6e0717] to-[#C8102E] text-white px-3 py-2 flex items-center justify-between border-b border-[#D4AF37] flex-none">
+            <div className="flex items-center space-x-2">
+              <FileText className="w-4 h-4 text-[#D4AF37]" />
+              <h3 className="text-xs font-extrabold uppercase tracking-wider">Record Details</h3>
+            </div>
+            <button onClick={() => setSelectedRow(null)} className="p-1 hover:bg-white/20 rounded-lg transition text-white cursor-pointer">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+
+          <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3 bg-stone-50/50 custom-scrollbar">
+            <section className="bg-stone-900 text-white p-2.5 rounded-lg shadow-xs border border-stone-800 space-y-2">
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#D4AF37] border-b border-stone-700 pb-1">
+                Result & Engineer Confirmation
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <div className="mt-0.5">{renderStyledCellData('result', getFieldValue(selectedRow, ['result'], 'N/A'))}</div>
                 </div>
-                <button onClick={() => setSelectedRow(null)} className="p-1 hover:bg-white/20 rounded-lg transition text-white cursor-pointer">
-                  <X className="w-4 h-4" />
-                </button>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Engineer Conf.</span>
+                  <div className="mt-0.5">{renderStyledCellData('engineer_confimation', getFieldValue(selectedRow, ['engineer_confimation', 'engineer_confirmation', 'engineerconfirmation'], 'N/A'))}</div>
+                  <div className="mt-1 font-semibold text-stone-200 text-[10px]">
+                    {getFieldValue(selectedRow, ['engineer_checkouter', 'checkouter'], 'N/A')}
+                  </div>
+                  <div className="text-[9px] text-stone-400 font-mono">
+                    {getFieldValue(selectedRow, ['bom_checking_time', 'checking_time'], 'N/A')}
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
+                Model & Verification Details
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="min-w-0">
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">MP Model</span>
+                  <span className="font-bold text-stone-900 text-[10px] block truncate" title={getFieldValue(selectedRow, ['mp model', 'mp_model', 'mpModel'], 'N/A')}>
+                    {getFieldValue(selectedRow, ['mp model', 'mp_model', 'mpModel'], 'N/A')}
+                  </span>
+                </div>
+                <div className="min-w-0">
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Dev Model</span>
+                  <span className="font-bold text-stone-900 text-[10px] block truncate" title={getFieldValue(selectedRow, ['dev model', 'dev_model', 'devModel'], 'N/A')}>
+                    {getFieldValue(selectedRow, ['dev model', 'dev_model', 'devModel'], 'N/A')}
+                  </span>
+                </div>
+                <div className="col-span-2 min-w-0">
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Init Model</span>
+                  <span className="font-semibold text-stone-800 text-[10px] block break-all">
+                    {getFieldValue(selectedRow, ['initial model', 'initial_model', 'initModel'], 'N/A')}
+                  </span>
+                </div>
               </div>
 
-              {/* Isi drawer yang di-scroll; header & tombol View Result / Close tetap di tempat */}
-              <div className="flex-1 min-h-0 overflow-y-auto p-3 space-y-3 bg-stone-50/50 custom-scrollbar">
-                {/* 1. Top Section Container: Result & Engineer Confirmation */}
-                <section className="bg-stone-900 text-white p-2.5 rounded-lg shadow-xs border border-stone-800 space-y-2">
-                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#D4AF37] border-b border-stone-700 pb-1">
-                    Result & Engineer Confirmation
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <div className="mt-0.5">{renderStyledCellData('result', getFieldValue(selectedRow, ['result'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Engineer Conf.</span>
-                      <div className="mt-0.5">{renderStyledCellData('engineer_confimation', getFieldValue(selectedRow, ['engineer_confimation', 'engineer_confirmation', 'engineerconfirmation'], 'N/A'))}</div>
-                      <div className="mt-1 font-semibold text-stone-200 text-[10px]">
-                        {getFieldValue(selectedRow, ['engineer_checkouter', 'checkouter'], 'N/A')}
-                      </div>
-                      <div className="text-[9px] text-stone-400 font-mono">
-                        {getFieldValue(selectedRow, ['bom_checking_time', 'checking_time'], 'N/A')}
-                      </div>
-                    </div>
-                  </div>
-                </section>
+              <div className="border-t border-stone-100 pt-2 grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Structure</span>
+                  <div>{renderStyledCellData('structure', getFieldValue(selectedRow, ['structure'], 'N/A'))}</div>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">BenComp</span>
+                  <div>{renderStyledCellData('bencomp', getFieldValue(selectedRow, ['benComp', 'bencomp'], 'N/A'))}</div>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">HWTool</span>
+                  <div>{renderStyledCellData('hwtool', getFieldValue(selectedRow, ['hwTool', 'hwtool'], 'N/A'))}</div>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Substitute Check</span>
+                  <div>{renderStyledCellData('substitute_check', getFieldValue(selectedRow, ['substitute_check', 'substitutecheck'], 'N/A'))}</div>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Tool Option</span>
+                  <div>{renderStyledCellData('tool_option', getFieldValue(selectedRow, ['tool_option', 'tooloption'], 'N/A'))}</div>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">OperationPlan</span>
+                  <div>{renderStyledCellData('operation_plan', getFieldValue(selectedRow, ['operation_plan', 'operationplan'], 'N/A'))}</div>
+                </div>
+              </div>
 
-                {/* 2. Core Operational & Model Container */}
-                <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
-                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
-                    Model & Verification Details
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div className="min-w-0">
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">MP Model</span>
-                      <span className="font-bold text-stone-900 text-[10px] block truncate" title={getFieldValue(selectedRow, ['mp model', 'mp_model', 'mpModel'], 'N/A')}>
-                        {getFieldValue(selectedRow, ['mp model', 'mp_model', 'mpModel'], 'N/A')}
-                      </span>
-                    </div>
-                    <div className="min-w-0">
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Dev Model</span>
-                      <span className="font-bold text-stone-900 text-[10px] block truncate" title={getFieldValue(selectedRow, ['dev model', 'dev_model', 'devModel'], 'N/A')}>
-                        {getFieldValue(selectedRow, ['dev model', 'dev_model', 'devModel'], 'N/A')}
-                      </span>
-                    </div>
-                    <div className="col-span-2 min-w-0">
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Init Model</span>
-                      <span className="font-semibold text-stone-800 text-[10px] block break-all">
-                        {getFieldValue(selectedRow, ['initial model', 'initial_model', 'initModel'], 'N/A')}
-                      </span>
-                    </div>
-                  </div>
+              <div className="border-t border-stone-100 pt-2 text-xs">
+                <span className="text-[9px] text-stone-400 block font-bold uppercase">Compare Note</span>
+                <p className="text-stone-700 bg-stone-50 p-1.5 rounded border border-stone-200 mt-0.5 break-words font-mono text-[11px]">
+                  {getFieldValue(selectedRow, ['compare_note', 'comparenote'], 'None')}
+                </p>
+              </div>
+            </section>
 
-                  <div className="border-t border-stone-100 pt-2 grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Structure</span>
-                      <div>{renderStyledCellData('structure', getFieldValue(selectedRow, ['structure'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">BenComp</span>
-                      <div>{renderStyledCellData('bencomp', getFieldValue(selectedRow, ['benComp', 'bencomp'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">HWTool</span>
-                      <div>{renderStyledCellData('hwtool', getFieldValue(selectedRow, ['hwTool', 'hwtool'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Substitute Check</span>
-                      <div>{renderStyledCellData('substitute_check', getFieldValue(selectedRow, ['substitute_check', 'substitutecheck'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Tool Option</span>
-                      <div>{renderStyledCellData('tool_option', getFieldValue(selectedRow, ['tool_option', 'tooloption'], 'N/A'))}</div>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">OperationPlan</span>
-                      <div>{renderStyledCellData('operation_plan', getFieldValue(selectedRow, ['operation_plan', 'operationplan'], 'N/A'))}</div>
-                    </div>
-                  </div>
-
-                  <div className="border-t border-stone-100 pt-2 text-xs">
-                    <span className="text-[9px] text-stone-400 block font-bold uppercase">Compare Note</span>
-                    <p className="text-stone-700 bg-stone-50 p-1.5 rounded border border-stone-200 mt-0.5 break-words font-mono text-[11px]">
-                      {getFieldValue(selectedRow, ['compare_note', 'comparenote'], 'None')}
-                    </p>
-                  </div>
-                </section>
-
-                {/* 3. Regional & SoC Hardware Attributes Container */}
-                <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
-                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
-                    Hardware & Regional Metadata
-                  </div>
-                  <div className="grid grid-cols-2 gap-2 text-xs">
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Year</span>
-                      <span className="font-bold text-stone-800">{getFieldValue(selectedRow, ['year', 'model_year'], 'N/A')}</span>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Model Series</span>
-                      <span className="font-bold text-stone-800">{getFieldValue(selectedRow, ['model_series', 'series'], 'N/A')}</span>
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Circuit PIC</span>
-                      {(() => {
-                        const rawPic = getFieldValue(selectedRow, ['model_circuit_pic', 'circuit_pic'], 'N/A');
-                        if (!rawPic || rawPic === 'N/A') return <span className="font-medium text-stone-800">N/A</span>;
-                        const picList = String(rawPic).split(',').map((item) => item.trim()).filter(Boolean);
-                        return (
-                          <ul className="list-disc list-inside text-stone-800 font-medium text-[10px] space-y-0.5 mt-0.5">
-                            {picList.map((pic, idx) => (
-                              <li key={idx} className="truncate">{pic}</li>
-                            ))}
-                          </ul>
-                        );
-                      })()}
-                    </div>
-                    <div>
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Model Region</span>
-                      <span className="font-medium text-stone-800">{getFieldValue(selectedRow, ['model_region', 'region'], 'N/A')}</span>
-                    </div>
-                    <div className="col-span-2">
-                      <span className="text-[9px] text-stone-400 block font-bold uppercase">Model SOC</span>
-                      <span className="font-mono text-stone-800 bg-stone-100 px-1.5 py-0.5 rounded text-[11px] font-bold inline-block mt-0.5">
-                        {getFieldValue(selectedRow, ['model_soc', 'soc'], 'N/A')}
-                      </span>
-                    </div>
-                  </div>
-                </section>
-
-                {/* 4. Timestamp & Orange Exception Log Container */}
-                <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
-                  <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
-                    Timestamps & Exception Tracking
-                  </div>
-                  <div className="space-y-1.5 text-xs">
-                    <div className="flex justify-between items-center">
-                      <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Release Date</span>
-                      <span className="font-mono font-medium text-stone-800">{getFieldValue(selectedRow, ['bom_release_date', 'release_date'], 'N/A')}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Checking Time</span>
-                      <span className="font-mono font-medium text-stone-800">{getFieldValue(selectedRow, ['bom_checking_time', 'checking_time'], 'N/A')}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Last Checker</span>
-                      <span className="font-semibold text-stone-800">{getFieldValue(selectedRow, ['bom_last_checker', 'last_checker'], 'N/A')}</span>
-                    </div>
-                  </div>
-
-                  {/* Highlighted Orange Exception Log Row */}
+            <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
+                Hardware & Regional Metadata
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Year</span>
+                  <span className="font-bold text-stone-800">{getFieldValue(selectedRow, ['year', 'model_year'], 'N/A')}</span>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Model Series</span>
+                  <span className="font-bold text-stone-800">{getFieldValue(selectedRow, ['model_series', 'series'], 'N/A')}</span>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Circuit PIC</span>
                   {(() => {
-                    const exceptionData = getFieldValue(selectedRow, ['exception_log', 'exceptionlog', 'exception'], null);
-                    const hasException = exceptionData !== null && exceptionData !== 'N/A' && String(exceptionData).trim() !== '';
-
+                    const rawPic = getFieldValue(selectedRow, ['model_circuit_pic', 'circuit_pic'], 'N/A');
+                    if (!rawPic || rawPic === 'N/A') return <span className="font-medium text-stone-800">N/A</span>;
+                    const picList = String(rawPic).split(',').map((item) => item.trim()).filter(Boolean);
                     return (
-                      <div className={`mt-2 p-2 rounded-lg border transition-all ${hasException ? 'bg-amber-100 border-amber-400 text-amber-950' : 'bg-stone-50 border-stone-200 text-stone-500'}`}>
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center space-x-1.5">
-                            <AlertTriangle className={`w-3.5 h-3.5 ${hasException ? 'text-amber-700 animate-pulse' : 'text-stone-400'}`} />
-                            <span className="text-[10px] font-extrabold uppercase tracking-wider">Exception Log</span>
-                          </div>
-                          <button
-                            onClick={() => setShowExceptionLog(!showExceptionLog)}
-                            className={`p-1 rounded hover:bg-black/10 transition cursor-pointer ${hasException ? 'text-amber-900' : 'text-stone-400'}`}
-                            title="Toggle Exception Log"
-                          >
-                            {showExceptionLog ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
-                          </button>
-                        </div>
-
-                        {showExceptionLog && (
-                          <div className="mt-1.5 pt-1.5 border-t border-amber-200/60 text-[11px] font-mono break-words">
-                            {hasException ? String(exceptionData) : 'No exception log entry recorded for this BOM item.'}
-                          </div>
-                        )}
-                      </div>
+                      <ul className="list-disc list-inside text-stone-800 font-medium text-[10px] space-y-0.5 mt-0.5">
+                        {picList.map((pic, idx) => (
+                          <li key={idx} className="truncate">{pic}</li>
+                        ))}
+                      </ul>
                     );
                   })()}
-                </section>
+                </div>
+                <div>
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Model Region</span>
+                  <span className="font-medium text-stone-800">{getFieldValue(selectedRow, ['model_region', 'region'], 'N/A')}</span>
+                </div>
+                <div className="col-span-2">
+                  <span className="text-[9px] text-stone-400 block font-bold uppercase">Model SOC</span>
+                  <span className="font-mono text-stone-800 bg-stone-100 px-1.5 py-0.5 rounded text-[11px] font-bold inline-block mt-0.5">
+                    {getFieldValue(selectedRow, ['model_soc', 'soc'], 'N/A')}
+                  </span>
+                </div>
+              </div>
+            </section>
+
+            <section className="bg-white p-2.5 rounded-lg border border-stone-200 shadow-xs space-y-2">
+              <div className="text-[10px] font-extrabold uppercase tracking-wider text-[#6e0717] border-b border-stone-100 pb-1">
+                Timestamps & Exception Tracking
+              </div>
+              <div className="space-y-1.5 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Release Date</span>
+                  <span className="font-mono font-medium text-stone-800">{getFieldValue(selectedRow, ['bom_release_date', 'release_date'], 'N/A')}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Checking Time</span>
+                  <span className="font-mono font-medium text-stone-800">{getFieldValue(selectedRow, ['bom_checking_time', 'checking_time'], 'N/A')}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-[9px] text-stone-400 font-bold uppercase">BOM Last Checker</span>
+                  <span className="font-semibold text-stone-800">{getFieldValue(selectedRow, ['bom_last_checker', 'last_checker'], 'N/A')}</span>
+                </div>
               </div>
 
-              <div className="p-2.5 bg-white border-t border-stone-200 flex items-center justify-between gap-2 flex-none">
-                {currentTab === 'bom' ? (
-                  <button
-                    onClick={() => handleViewResultInNewTab(selectedRow)}
-                    className="flex-1 inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 bg-[#C8102E] hover:bg-[#A00C23] text-white text-xs font-extrabold rounded-lg border border-[#D4AF37] transition shadow-xs cursor-pointer"
-                  >
-                    <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
-                    <span>View Result</span>
-                  </button>
-                ) : null}
-                <button
-                  onClick={() => setSelectedRow(null)}
-                  className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold rounded-lg border border-stone-300 transition cursor-pointer"
-                >
-                  Close
-                </button>
-              </div>
-            </aside>
-          )}
+              {(() => {
+                const exceptionData = getFieldValue(selectedRow, ['exception_log', 'exceptionlog', 'exception'], null);
+                const hasException = exceptionData !== null && exceptionData !== 'N/A' && String(exceptionData).trim() !== '';
+
+                return (
+                  <div className={`mt-2 p-2 rounded-lg border transition-all ${hasException ? 'bg-amber-100 border-amber-400 text-amber-950' : 'bg-stone-50 border-stone-200 text-stone-500'}`}>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-1.5">
+                        <AlertTriangle className={`w-3.5 h-3.5 ${hasException ? 'text-amber-700 animate-pulse' : 'text-stone-400'}`} />
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider">Exception Log</span>
+                      </div>
+                      <button
+                        onClick={() => setShowExceptionLog(!showExceptionLog)}
+                        className={`p-1 rounded hover:bg-black/10 transition cursor-pointer ${hasException ? 'text-amber-900' : 'text-stone-400'}`}
+                        title="Toggle Exception Log"
+                      >
+                        {showExceptionLog ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+                      </button>
+                    </div>
+
+                    {showExceptionLog && (
+                      <div className="mt-1.5 pt-1.5 border-t border-amber-200/60 text-[11px] font-mono break-words">
+                        {hasException ? String(exceptionData) : 'No exception log entry recorded for this BOM item.'}
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+            </section>
+          </div>
+
+          <div className="p-2.5 bg-white border-t border-stone-200 flex items-center justify-between gap-2 flex-none">
+            {currentTab === 'bom' ? (
+              <button
+                onClick={() => handleViewResultInNewTab(selectedRow)}
+                className="flex-1 inline-flex items-center justify-center space-x-1.5 px-3 py-1.5 bg-[#C8102E] hover:bg-[#A00C23] text-white text-xs font-extrabold rounded-lg border border-[#D4AF37] transition shadow-xs cursor-pointer"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-[#D4AF37]" />
+                <span>View Result</span>
+              </button>
+            ) : null}
+            <button
+              onClick={() => setSelectedRow(null)}
+              className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-700 text-xs font-bold rounded-lg border border-stone-300 transition cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </aside>
+      )}
       </div>
 
-      {/* MPX Report Modal */}
       {showMpxModal && (
         <div className="fixed inset-0 bg-stone-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-md w-full p-4 shadow-2xl border border-red-100 space-y-3">
