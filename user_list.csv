@@ -1,0 +1,163 @@
+No,Name,Emp_No,Email,ID,Gender,Level,Grade,Position,TEAM,DEPT CODE,NickName,Auth,Part,Total BOM,Total BOM_right,No Initial,NG,MPX Checked,Not Verified,overdue,urgent,Completed,confirmed
+1,BAGUS BERNADI SAPUTRA,IC000001,bagusb.saputra@lge.com,bagusb.saputra,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Bagus,Y,HW 120Hz,39,39,0,0,0,0,NULL,NULL,NULL,NULL
+2,FACHRI NUGRAHA ADHIATMA,IC000002,fachri15.adhiatma@lge.com,fachri15.adhiatma,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Fachri,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+3,MUHAMMAD AUFA IRSYADDIN,IC000004,aufaic.irsyaddin@lge.com,aufaic.irsyaddin,M,Research Engineer,STAFF,NULL,ATSC,20008,Aufa,Y,HW 60Hz,367,367,0,0,0,22,NULL,NULL,NULL,NULL
+4,RAFI DHEGA RAMANDA,IC000005,dhega.ramanda@lge.com,dhega.ramanda,M,Research Engineer,STAFF,NULL,DVB,20003,Dhega,S,HW 120Hz,94,94,0,0,0,25,NULL,NULL,NULL,NULL
+5,CHANDRA EKO WINANTO,IC000018,chandraeko.winanto@lge.com,chandraeko.winanto,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Chandra,NULL,HW OLED,190,190,0,0,0,0,NULL,NULL,NULL,NULL
+6,PUJO SANTOSO,IC000081,pujobdg.santoso@lge.com,pujobdg.santoso,M,Sr. Research Engineer,STAFF,NULL,ATSC,20008,Pujo,NULL,HW 60Hz,146,146,0,0,0,8,NULL,NULL,NULL,NULL
+7,SLAMET SURYANA MATULESSY,IC000082,slamet.matulessy@lge.com,slamet.matulessy,M,Research Engineer,STAFF,NULL,ATSC,20008,Slamet,Y,HW 120Hz,19,19,0,0,0,0,NULL,NULL,NULL,NULL
+8,MUHAMMAD ALFIS RAMADHAN,IC000109,alfis.ramadhan@lge.com,alfis.ramadhan,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Alfis,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+9,ABDI PRATAMA PUTRA,IC000141,abdi.putra@lge.com,abdi.putra,M,Research Engineer,STAFF,NULL,DVB,20003,Abdi,S,HW 60Hz,407,407,0,0,0,0,NULL,NULL,NULL,NULL
+10,WELLA AYUNI ZAKIRMAN,IC000142,wella.zakirman@lge.com,wella.zakirman,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Wella,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+11,BOBI LAROMBIA,IC000145,bobi.larombia@lge.com,bobi.larombia,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Bobi,NULL,HW 60Hz,34,34,0,0,0,0,NULL,NULL,NULL,NULL
+12,BUDI WIJAYA,IC000146,budi.wijaya@lge.com,budi.wijaya,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Budi,S,HW 60Hz,119,119,0,0,0,0,NULL,NULL,NULL,NULL
+13,ERDY YUDHISTIRA,IC000148,erdy.yudhistira@lge.com,erdy.yudhistira,M,Research Engineer,STAFF,NULL,DVB,20003,Erdy,Y,Asia 60Hz,112,112,0,0,0,17,NULL,NULL,NULL,NULL
+14,EXEL KHARNEL NUGRAHA,IC000149,exel.nugraha@lge.com,exel.nugraha,M,Research Engineer,STAFF,NULL,DVB,20003,Exel,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+15,FAUZAN SABILAL MUHTADIN,IC000150,fauzan.muhtadin@lge.com,fauzan.muhtadin,M,Research Engineer,STAFF,NULL,DVB,20003,Ocan,NULL,HW 60Hz,1320,1320,0,0,0,550,NULL,NULL,NULL,NULL
+16,JUSUF ABIMAS PRATAMA,IC000155,jusuf.pratama@lge.com,jusuf.pratama,M,Research Engineer,STAFF,NULL,DVB,20003,Ucup,NULL,HW 60Hz,215,215,0,0,0,9,NULL,NULL,NULL,NULL
+17,MUHAMMAD ALAUDIN TRI KURNIA,IC000161,alaudin.kurnia@lge.com,alaudin.kurnia,M,Research Engineer,STAFF,NULL,ATSC,20008,Alaudin,NULL,Power,806,806,0,0,0,16,NULL,NULL,NULL,NULL
+18,MUHAMMAD RIZKY WIRA UTOMO,IC000166,rizky.utomo@lge.com,rizky.utomo,M,Research Engineer,STAFF,NULL,DVB,20003,Wira,NULL,HW 120Hz,124,124,0,0,0,8,NULL,NULL,NULL,NULL
+19,RACHMITA HASNI,IC000167,rachmita.hasni@lge.com,rachmita.hasni,F,Research Engineer,STAFF,NULL,ATSC,20008,Rachmita,NULL,HW 120Hz,46,46,0,0,0,1,NULL,NULL,NULL,NULL
+20,TODO DAVID NAPITUPULU,IC000169,todo.napitupulu@lge.com,todo.napitupulu,M,Research Engineer,STAFF,NULL,ATSC,20008,Todo,S,SQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+21,WAHYU RAMADAN,IC000170,wahyu.ramadan@lge.com,wahyu.ramadan,M,Research Engineer,STAFF,NULL,ATSC,20008,Wahyu,NULL,HW 60Hz,462,462,0,0,0,14,NULL,NULL,NULL,NULL
+22,ANNAS FURQON MAHDALI,IC000171,annas.mahdali@lge.com,annas.mahdali,M,Research Engineer,STAFF,NULL,ATSC,20008,Annas,NULL,HW 120Hz,49,49,0,0,0,0,NULL,NULL,NULL,NULL
+23,ADI ABDILLAH,IC000184,adi.abdillah@lge.com,adi.abdillah,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Adi,NULL,HW OLED,410,410,0,0,0,1,NULL,NULL,NULL,NULL
+24,GEUMSUB SHIN,IC000361,geumsub.sin@lge.com,geumsub.sin,M,FSE,FSE,NULL,DVB,20003,Mr. Shin,S,Team Leader,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+26,SUNGBO JUNG,IC000721,sungbo.jung@lge.com,sungbo.jung,M,FSE,FSE,NULL,OLED,20007,Mr. SB,S,Team Leader,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+27,MUHAMMAD TARIS HADYANTAMA,IC000744,taris.hadyantama@lge.com,taris.hadyantama,M,Research Engineer,STAFF,NULL,DVB,20003,Taris,Y,Asia 60Hz,132,132,0,0,0,36,NULL,NULL,NULL,NULL
+28,ADE RIZKI DWIPUTRO,IC000821,ade.dwiputro@lge.com,ade.dwiputro,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Ade,NULL,HW OLED,256,256,0,0,0,0,NULL,NULL,NULL,NULL
+29,AZKA ZHARFAN HAFIZH,IC000854,azka.hafizh@lge.com,azka.hafizh,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Azka,S,HW 120Hz,54,54,0,0,0,5,NULL,NULL,NULL,NULL
+30,DWI ANDIKA AULIA,IC000824,dika.aulia@lge.com,dika.aulia,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Dika,NULL,HW 60Hz,118,118,0,0,0,0,NULL,NULL,NULL,NULL
+31,GHIFFARY RAMADHANA RYNARDHI WIBOWO,IC000825,ghiffary.wibowo@lge.com,ghiffary.wibowo,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Ghiffary,NULL,HW OLED,357,357,0,0,0,0,NULL,NULL,NULL,NULL
+32,OKI DWI CAHYONO,IC000826,oki.cahyono@lge.com,oki.cahyono,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Oki,NULL,HW 120Hz,219,219,0,0,0,1,NULL,NULL,NULL,NULL
+33,PRASETYO HUTOMO,IC000827,tom.hutomo@lge.com,tom.hutomo,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Tomo,NULL,HW 60Hz,379,379,0,0,0,22,NULL,NULL,NULL,NULL
+34,RAFIF ARTONO DARMAWAN,IC000828,rafif.darmawan@lge.com,rafif.darmawan,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rafif,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+35,REFINUR AMIR MUHAMMAD,IC000829,refi.muhammad@lge.com,refi.muhammad,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Refi,NULL,Power,3425,3425,0,0,0,1243,NULL,NULL,NULL,NULL
+36,RIFQI LUTHFI NAUFAL,IC000830,rifqi.naufal@lge.com,rifqi.naufal,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Rifqi,NULL,HW OLED,516,516,0,0,0,0,NULL,NULL,NULL,NULL
+37,SANIA FAUZIYAH,IC000831,sania.fauziyah@lge.com,sania.fauziyah,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Sania,NULL,Asia 60Hz,125,125,0,0,0,19,NULL,NULL,NULL,NULL
+38,SHIDDIQI SHIDDIQI,IC000833,diki.shiddiqi@lge.com,diki.shiddiqi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Shiddiqi,NULL,Power,967,967,0,0,0,106,NULL,NULL,NULL,NULL
+39,YUDHISTIRA RIZAL FIRMANSYAH,IC000835,rizal.firmansyah@lge.com,rizal.firmansyah,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Rizal,NULL,HW 60Hz,371,371,0,0,0,27,NULL,NULL,NULL,NULL
+40,ALDINO PUTRA PAMBUDI,IC000862,aldino.pambudi@lge.com,aldino.pambudi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Aldino,NULL,HW 60Hz,222,222,0,0,0,0,NULL,NULL,NULL,NULL
+41,ARIEF FIRMANSYAH,IC000861,arief.firmansyah@lge.com,arief.firmansyah,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Arief,Y,HW 120Hz,91,91,0,0,0,0,NULL,NULL,NULL,NULL
+42,AGUNG WIBISONO,IC000992,agung.wibisono@lge.com,agung.wibisono,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Agung,NULL,HW OLED,27,27,0,0,0,0,NULL,NULL,NULL,NULL
+43,AHMAD ARIEF RIVALDI,IC000993,arief.rivaldi@lge.com,arief.rivaldi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Arief,NULL,HW 60Hz,456,456,0,0,0,7,NULL,NULL,NULL,NULL
+44,AHMAD IFANDI,IC000968,ahmad.ifandi@lge.com,ahmad.ifandi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Ifandi,S,HW 60Hz,456,456,0,0,0,16,NULL,NULL,NULL,NULL
+45,ALIEF MUHAMMAD,IC000967,alief.muhammad@lge.com,alief.muhammad,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Alief,NULL,HW 120Hz,104,104,0,0,0,0,NULL,NULL,NULL,NULL
+46,DAMITA ADHI PRATAMA,IC000994,damita.pratama@lge.com,damita.pratama,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Damita,NULL,HW 120Hz,103,103,0,0,0,0,NULL,NULL,NULL,NULL
+47,DARY RAFI PUTRA PRADANA,IC000969,dary.pradana@lge.com,dary.pradana,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Dary,Y,HW OLED,430,430,0,0,0,0,NULL,NULL,NULL,NULL
+48,DICKY ELNUR,IC000970,dicky.elnur@lge.com,dicky.elnur,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Dicky,NULL,HW OLED,90,90,0,0,0,0,NULL,NULL,NULL,NULL
+49,DIMAS RAYHAN WIDYARIS,IC000971,rayhan.widyaris@lge.com,rayhan.widyaris,M,Research Engineer,STAFF,NULL,OLED,20007,Widyaris,NULL,HW OLED,675,675,0,0,0,14,NULL,NULL,NULL,NULL
+50,DIMAS SEPTIYAN,IC000972,dimas.septiyan@lge.com,dimas.septiyan,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Dimas,NULL,HW 60Hz,818,818,0,0,0,76,NULL,NULL,NULL,NULL
+51,EVI YULIANI,IC000973,evi.yuliani@lge.com,evi.yuliani,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Evi,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+52,FADHIL M HANAFI,IC000974,fadhil.hanafi@lge.com,fadhil.hanafi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fadhil,NULL,HW 120Hz,379,379,0,0,0,42,NULL,NULL,NULL,NULL
+53,GHINA NADIFAH AMANI,IC000976,ghina.amani@lge.com,ghina.amani,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Ghina,Y,HW OLED,180,180,0,0,0,1,NULL,NULL,NULL,NULL
+54,JAHROO NABILA MARVI,IC000978,jahroo.marvi@lge.com,jahroo.marvi,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Jahroo,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+55,M IQBAL FADHILLAH KERTABUDI,IC000979,iqbal.kertabudi@lge.com,iqbal.kertabudi,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Iqbal,Y,HW OLED,222,222,0,0,0,0,NULL,NULL,NULL,NULL
+56,M. ARIF RAHMAN,IC000980,arif.rahman@lge.com,arif.rahman,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Arif,NULL,HW 60Hz,305,305,0,0,0,9,NULL,NULL,NULL,NULL
+57,MUHAMAD ADITIA WSA,IC000981,aditia.wsa@lge.com,aditia.wsa,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Adit,NULL,HW 120Hz,211,211,0,0,0,8,NULL,NULL,NULL,NULL
+58,MUHAMMAD FIQRI SUHANDA,IC000982,fiqri.suhanda@lge.com,fiqri.suhanda,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Fiqri,NULL,HW OLED,91,91,0,0,0,0,NULL,NULL,NULL,NULL
+59,PRAJA CAHYA KESUMA,IC000984,praja.kesuma@lge.com,praja.kesuma,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Praja,NULL,HW 120Hz,76,76,0,0,0,3,NULL,NULL,NULL,NULL
+60,ROYAN HIDAYAT,IC000986,royan.hidayat@lge.com,royan.hidayat,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Royan,NULL,Power,477,477,0,0,0,15,NULL,NULL,NULL,NULL
+61,SAN AFIRRAH VASMAULIDZRA,IC000987,fira.vasmaulidzra@lge.com,fira.vasmaulidzra,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Fira,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+62,VANZA MAYLONDA,IC000989,vanza.maylonda@lge.com,vanza.maylonda,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Vanza,NULL,Asia 60Hz,153,153,0,0,0,13,NULL,NULL,NULL,NULL
+63,AZIZ MUZAKI,IC001007,aziz.muzaki@lge.com,aziz.muzaki,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Aziz,NULL,HW 60Hz,385,385,0,0,0,52,NULL,NULL,NULL,NULL
+64,SEKAR AMARA DWI NING TYAS,IC001006,sekar.tyas@lge.com,sekar.tyas,F,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Sekar,S,HW 60Hz,347,347,0,0,0,32,NULL,NULL,NULL,NULL
+65,MUH. ABRI YANSYAH,IC001002,abri.yansyah@lge.com,abri.yansyah,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Abri,NULL,Asia 60Hz,153,153,0,0,0,14,NULL,NULL,NULL,NULL
+66,MUHAMMAD FAKHRUDIN,IC001003,faru.fakhrudin@lge.com,faru.fakhrudin,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fakhrudin,NULL,HW 120Hz,468,468,0,0,0,9,NULL,NULL,NULL,NULL
+67,ABISAY GUNAWAN SIGAR,IC001362,abisay.sigar@lge.com,abisay.sigar,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Abisay,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+68,ADITYA PUTRA YUDHANANTA,IC001386,aditya.yudhananta@lge.com,aditya.yudhananta,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Yudha,NULL,HW 60Hz,307,307,0,0,0,114,NULL,NULL,NULL,NULL
+69,AKHMAD FARID ROSYIDI,IC001364,farid.rosyidi@lge.com,farid.rosyidi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Farid,NULL,Power,904,904,0,0,0,112,NULL,NULL,NULL,NULL
+70,ALFATHAN DANDY PRADANA,IC001365,alfathan.pradana@lge.com,alfathan.pradana,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fathan,NULL,HW 120Hz,23,23,0,0,0,1,NULL,NULL,NULL,NULL
+71,ALMEYDA TARA NABILLA,IC001366,almeyda.nabilla@lge.com,almeyda.nabilla,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Mey,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+72,DANIEL CHRISTIAN ALEXANDER LUMBANTORUAN,IC001370,daniel.lumbantoruan@lge.com,daniel.lumbantoruan,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Daniel,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+73,HERU PRANOTO YUDO SUJARKO,IC001372,heru.sujarko@lge.com,heru.sujarko,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Heru,NULL,HW OLED,400,400,0,0,0,29,NULL,NULL,NULL,NULL
+74,MUHAMMAD ALBIK GHALELA,IC001373,albik.ghalela@lge.com,albik.ghalela,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Albik,Y,HW OLED,209,209,0,0,0,0,NULL,NULL,NULL,NULL
+75,MUHAMMAD FATHURRAHMAN ALDI,IC001374,fathur.aldi@lge.com,fathur.aldi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Aldi,NULL,Asia 60Hz,294,294,0,0,0,117,NULL,NULL,NULL,NULL
+76,MUHAMMAD IRVAN WICAKSONO,IC001376,irvan.wicaksono@lge.com,irvan.wicaksono,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Irvan,Y,HW 120Hz,129,129,0,0,0,1,NULL,NULL,NULL,NULL
+77,MUHAMMAD RIZKI,IC001377,muh.rizki@lge.com,muh.rizki,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rizki,NULL,HW 60Hz,775,775,0,0,0,117,NULL,NULL,NULL,NULL
+78,NAUFAL RASHAD ARYAPUTRA,IC001378,naufal.aryaputra@lge.com,naufal.aryaputra,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Naufal,NULL,HW OLED,202,202,0,0,0,0,NULL,NULL,NULL,NULL
+79,RENRA ALFINO RAHMAT AKBAR ERMAN,IC001379,renra.erman@lge.com,renra.erman,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Renra,NULL,HW 60Hz,288,288,0,0,0,6,NULL,NULL,NULL,NULL
+80,RIZAL ZULFIQRI AHMAD,IC001380,rizal.ahmad@lge.com,rizal.ahmad,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Izul,NULL,Power,2482,2482,0,0,0,460,NULL,NULL,NULL,NULL
+81,RIZKA ZAIDATURRAHMAH,IC001381,rizka.zaidaturrahmah@lge.com,rizka.zaidaturrahmah,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rizka,NULL,Asia 60Hz,198,198,0,0,0,65,NULL,NULL,NULL,NULL
+82,ROSYADATURRAHMAH AZNIRO,IC001382,ocha.azniro@lge.com,ocha.azniro,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Ocha,NULL,HW 60Hz,597,597,0,0,0,42,NULL,NULL,NULL,NULL
+83,SAIDINA USMAN,IC001383,saidina.usman@lge.com,saidina.usman,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Usman,NULL,HW 60Hz,696,696,0,0,0,529,NULL,NULL,NULL,NULL
+84,DESI FATIMAH,IC001384,desi.fatimah@lge.com,desi.fatimah,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Desi,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+85,HAMDAN ROMADHONA,IC001385,hamdan.romadhona@lge.com,hamdan.romadhona,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Hamdan,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+86,SHAFINA RIFDHAYANTI ZEIN,IC001363,shafina.zein@lge.com,shafina.zein,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Shafina,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+87,HILMAN SITUMORANG,IC001401,hilman.situmorang@lge.com,hilman.situmorang,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Hilman,NULL,SQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+88,CITRA TRILAKSANA,IC001402,citra.trilaksana@lge.com,citra.trilaksana,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Citra,NULL,HW 120Hz,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+89,FAISHAL HANIF MUHADZDZIB,IC001403,faishal.muhadzdzib@lge.com,faishal.muhadzdzib,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Faishal,S,HW 60Hz,197,197,0,0,0,0,NULL,NULL,NULL,NULL
+90,GILANG ABIDZAR,IC001404,gilang.abidzar@lge.com,gilang.abidzar,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Gilang,NULL,HW 120Hz,11,11,0,0,0,0,NULL,NULL,NULL,NULL
+91,ABRIYAN YUSUF,IC001481,abriyan.yusuf@lge.com,abriyan.yusuf,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Abrian,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+92,GIGIH HERNAIN NANDA ALDIANTAMA,IC001501,gigih.aldiantama@lge.com,gigih.aldiantama,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Gigih,NULL,HW 60Hz,471,471,0,0,0,32,NULL,NULL,NULL,NULL
+93,ADRIAN ISNA IZZULHAQ,IC001541,adrian.izzulhaq@lge.com,adrian.izzulhaq,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Adrian,NULL,HW 60Hz,851,851,0,0,0,100,NULL,NULL,NULL,NULL
+94,KEITARO WILDAN RAMADHAN,IC100015,keitaro.ramadhan@lge.com,keitaro.ramadhan,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Keito,NULL,Asia 60Hz,95,95,0,0,0,24,NULL,NULL,NULL,NULL
+95,KAMILA AZZAHRA NADIVA,IC100037,kamila.nadiva@lge.com,kamila.nadiva,F,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Kamila,NULL,SQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+96,MUHAMMAD ALVARO HASTON,IC100038,alvaro.haston@lge.com,alvaro.haston,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Alvaro,NULL,SQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+97,MUHAMMAD IRFAN HAFIZHUDDIN,IC100039,irfan.hafizhuddin@lge.com,irfan.hafizhuddin,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Pane,S,HW 60Hz,178,178,0,0,0,19,NULL,NULL,NULL,NULL
+98,STEPHEN ADERAMA SEPTIAN,IC100041,stephen.septian@lge.com,stephen.septian,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Stephen,NULL,Power,829,829,0,0,0,146,NULL,NULL,NULL,NULL
+99,AVELIA FAIRUZ FAADHILAH,IC100042,avelia.faadhilah@lge.com,avelia.faadhilah,F,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Avelia,NULL,HW 60Hz,106,106,0,0,0,14,NULL,NULL,NULL,NULL
+100,MUGNI AHMAD HIKAM,IC100043,mugni.hikam@lge.com,mugni.hikam,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Mugni,NULL,Power,324,324,0,0,0,7,NULL,NULL,NULL,NULL
+101,FAUZAN RIZQI FAJAR,IC100044,fauzan.fajar@lge.com,fauzan.fajar,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Fauzan,NULL,HW 120Hz,9,9,0,0,0,0,NULL,NULL,NULL,NULL
+102,MUHAMMAD RIZQI SUBENO,IC100045,rizqi.subeno@lge.com,rizqi.subeno,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Beno,NULL,Power,1873,1873,0,0,0,381,NULL,NULL,NULL,NULL
+103,NADIRA DWI ATHAYA,IC100046,nadira.athaya@lge.com,nadira.athaya,F,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Nadira,NULL,HW 120Hz,10,10,0,0,0,1,NULL,NULL,NULL,NULL
+104,ARISTOTELES NARANG,IC100047,aristo.narang@lge.com,aristo.narang,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Aris,NULL,Power,637,637,0,0,0,72,NULL,NULL,NULL,NULL
+105,ISNANDARU PRASETYO,IC100048,ndaru.prasetyo@lge.com,ndaru.prasetyo,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Daru,NULL,HW 120Hz,7,7,0,0,0,0,NULL,NULL,NULL,NULL
+106,PRADIPTA CYRIL SUMARAHARDHI,IC100049,dipta.sumarahardhi@lge.com,dipta.sumarahardhi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Dipta,NULL,Power,3049,3049,0,0,0,1205,NULL,NULL,NULL,NULL
+107,PRASETYO RIZKY ARFAN SODIQ,IC100050,pras.sodiq@lge.com,pras.sodiq,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Pras,NULL,HW 120Hz,14,14,0,0,0,0,NULL,NULL,NULL,NULL
+108,IRWAN AUFI,IC100051,irwan.aufi@lge.com,irwan.aufi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Irwan,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+109,RUSDI NAUFALDIANSYAH,IC100052,rusdi.naufaldiansyah@lge.com,rusdi.naufaldiansyah,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rusdi,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+110,M. ALIF AL FARRIJ,IC100053,alif.farrij@lge.com,alif.farrij,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Alif,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+111,ILYAS HAMZAH ALKATIRI,IC100054,ilyas.alkatiri@lge.com,ilyas.alkatiri,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Ilyas,NULL,HW 60Hz,154,154,0,0,0,57,NULL,NULL,NULL,NULL
+112,SISI INDRIANI,IC100055,sisi.indriani@lge.com,sisi.indriani,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Sisi,NULL,HW 60Hz,158,158,0,0,0,3,NULL,NULL,NULL,NULL
+113,OI PARAPAT,IC100056,oi.parapat@lge.com,oi.parapat,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Oi,NULL,HW 120Hz,80,80,3,0,0,5,NULL,NULL,NULL,NULL
+114,LIYAS FERDY RAY TARIGAN,IC100057,liyas.tarigan@lge.com,liyas.tarigan,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Liyas,S,Asia 60Hz,140,140,0,0,0,31,NULL,NULL,NULL,NULL
+115,RAYHAN ATHALLA NUR RASYADA,IC100058,athalla.rasyada@lge.com,athalla.rasyada,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Athalla,NULL,HW 120Hz,61,61,0,0,0,13,NULL,NULL,NULL,NULL
+116,FIKRI ZAINI BARIDWAN,IC100059,fikri.baridwan@lge.com,fikri.baridwan,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fikri,NULL,Asia 60Hz,159,159,0,0,0,95,NULL,NULL,NULL,NULL
+117,AFIQ AKRAM,IC100060,afiq.akram@lge.com,afiq.akram,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Akram,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+118,NADINE AMALIA KOSELAN,IC100061,nadine.koselan@lge.com,nadine.koselan,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Nadine,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+119,PRAMESWARI DIAHASNA TSANY,IC100062,hasna.tsany@lge.com,hasna.tsany,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Hasna,Y,HW OLED,83,83,0,0,0,6,NULL,NULL,NULL,NULL
+120,RAYHAN FARID AKBARI,IC100063,rayhan.akbari@lge.com,rayhan.akbari,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Akbari,NULL,HW OLED,9,9,0,0,0,0,NULL,NULL,NULL,NULL
+121,MUHAMMAD DAFFA RHEZA,IC100064,daffa.rheza@lge.com,daffa.rheza,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Daffa,NULL,HW OLED,8,8,0,0,0,0,NULL,NULL,NULL,NULL
+122,STEFANI SURYANINGSIH PAKADANG,IC100065,stefani.pakadang@lge.com,stefani.pakadang,F,Jr. Research Engineer,STAFF,NULL,OLED,20007,Stefani,Y,HW OLED,9,9,0,0,0,0,NULL,NULL,NULL,NULL
+123,KHUNUR MUHAMMAD AULIA RAHMAN,IC100066,khunur.rahman@lge.com,khunur.rahman,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Khunur,NULL,HW OLED,54,54,0,0,0,0,NULL,NULL,NULL,NULL
+124,MUHAMAD HAMDANI ADNAN,IC100067,hamdani.adnan@lge.com,hamdani.adnan,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Hamdani,NULL,HW OLED,11,11,0,0,0,0,NULL,NULL,NULL,NULL
+125,WILLIAM JOSHUA NAINGGOLAN,IC100068,william.nainggolan@lge.com,william.nainggolan,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,William,NULL,HW OLED,7,7,0,0,0,0,NULL,NULL,NULL,NULL
+126,VICKY FIRMANSYAH,IC100099,vicky.firmansyah@lge.com,vicky.firmansyah,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Vicky,NULL,HW OLED,186,186,0,0,0,27,NULL,NULL,NULL,NULL
+127,MUHAMAD ANDRIAN,IC100100,muhamad.andrian@lge.com,muhamad.andrian,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Andrian,NULL,HW 120Hz,38,38,0,0,0,5,NULL,NULL,NULL,NULL
+128,MUHAMMAD FACHRY ALFARIDZI,IC100101,fachry.alfaridzi@lge.com,fachry.alfaridzi,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fachry,NULL,HW 120Hz,75,75,0,0,0,9,NULL,NULL,NULL,NULL
+129,SATRIO NURCAHYO,IC100120,satrio.nurcahyo@lge.com,satrio.nurcahyo,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Satrio,NULL,HW OLED,159,159,0,0,0,2,NULL,NULL,NULL,NULL
+130,KHALIFAH AZKA ISMAIL,IC100121,azka.ismail@lge.com,azka.ismail,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Azka,Y,HW OLED,43,43,0,0,0,0,NULL,NULL,NULL,NULL
+131,ISTI FINA,IC100122,isti.fina@lge.com,isti.fina,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Fina,NULL,HW 120Hz,62,62,0,0,0,12,NULL,NULL,NULL,NULL
+132,HAIKAL ARSYA AMANU,IC100123,haikal.amanu@lge.com,haikal.amanu,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Haikal,Y,HW 60Hz,187,187,0,0,0,34,NULL,NULL,NULL,NULL
+133,NIZAR ZULFIKAR,IC100124,nizar.zulfikar@lge.com,nizar.zulfikar,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Nizar,Y,HW OLED,99,99,0,0,0,0,NULL,NULL,NULL,NULL
+134,AVICENNA M RIZQY,IC100125,avicenna.rizqy@lge.com,avicenna.rizqy,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Avicenna,NULL,HW 60Hz,346,346,0,0,0,1,NULL,NULL,NULL,NULL
+135,NIFWAN ARBI NUGROHO,IC100126,nifwan.nugroho@lge.com,nifwan.nugroho,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Nifwan,Y,HW 60Hz,91,91,0,0,0,8,NULL,NULL,NULL,NULL
+136,CHRISTOPHER JULIANTO,IC100134,christopher.julianto@lge.com,christopher.julianto,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Chris,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+137,BASKARA PRADIPTA HADIWIJAYA,IC100135,baskara.hadiwijaya@lge.com,baskara.hadiwijaya,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Baskara,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+138,ADAM MONHARDI,IC100163,adam.monhardi@lge.com,adam.monhardi,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Adam,NULL,HW OLED,4,4,0,0,0,0,NULL,NULL,NULL,NULL
+139,HASANIN TRISAPUTRA,IC100191,hasanin.trisaputra@lge.com,hasanin.trisaputra,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Sanin,NULL,HW OLED,42,42,0,0,0,0,NULL,NULL,NULL,NULL
+140,YASSER HADIAN,IC100190,yasser.hadian@lge.com,yasser.hadian,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Yasser,NULL,HW OLED,24,24,5,0,0,5,NULL,NULL,NULL,NULL
+141,RIFQI AFFAN GHIFARI,IC100157,rifqi.ghifari@lge.com,rifqi.ghifari,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Affan,NULL,HW OLED,18,18,0,0,0,1,NULL,NULL,NULL,NULL
+142,MUHAMMAD FAIZ,IC100162,muhammad.faiz@lge.com,muhammad.faiz,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Faiz,NULL,HW 120Hz,44,44,0,0,0,1,NULL,NULL,NULL,NULL
+143,MUHAMMAD AFIN,IC100196,muh.afin@lge.com,muh.afin,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Afin,NULL,HW 120Hz,3,3,0,0,0,0,NULL,NULL,NULL,NULL
+144,YUDHISTIRA RANGGAWIDJAYA,IC100195,yudhis.ranggawidjaya@lge.com,yudhis.ranggawidjaya,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Rangga,S,HW 60Hz,41,41,28,3,0,11,15,15,11,NULL
+145,AHMAD JABAR ILMI,IC100197,jabar.ilmi@lge.com,jabar.ilmi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Ilmi,NULL,HW 60Hz,39,39,0,0,0,14,NULL,NULL,NULL,NULL
+146,NATHAN PRAJA KUSUMA,NULL,nathan.kusuma@lge.com,nathan.kusuma,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Nathan,NULL,SW,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+147,SAFIRA ADARA KHAIRUNNISA,NULL,safira.khairunnisa@lge.com,safira.khairunnisa,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Safira,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+148,MUHAMMAD RAIHAN NICO SUSILO,NULL,raihan.susilo@lge.com,raihan.susilo,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rei,NULL,PQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+149,RAFAEL ADITYA CAHYO W,IC100160,rafael.w@lge.com,rafael.w,M,Jr. Research Engineer,STAFF,NULL,DVB,20003,Rafael,NULL,HW 60Hz,84,84,0,0,0,0,NULL,NULL,NULL,NULL
+150,ARYA VEDA ALVIANTORO,IC100161,arya.alviantoro@lge.com,arya.alviantoro,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Arya,NULL,SQ,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+151,YONATHAN ARYANDA WIJAYA,NULL,yonathan.wijaya@lge.com,yonathan.wijaya,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Yonathan,NULL,Power,125,125,0,0,0,29,NULL,NULL,NULL,NULL
+152,MUHAMMAD NUR WAHID,NULL,mnur.wahid@lge.com,mnur.wahid,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Wahid,NULL,Power,304,304,0,0,0,119,NULL,NULL,NULL,NULL
+153,WAHYU MICHO INDRAWAN,IC100156,micho.indrawan@lge.com,micho.indrawan,M,Jr. Research Engineer,STAFF,NULL,OLED,20007,Micho,NULL,HW OLED,113,113,0,0,0,4,NULL,NULL,NULL,NULL
+154,FINNA ELFIANA NABILAH,IC100193,finna.nabilah@lge.com,finna.nabilah,F,Jr. Research Engineer,STAFF,NULL,DVB,20003,Finna,Y,HW 120Hz,15,15,0,0,0,0,NULL,NULL,NULL,NULL
+155,SEUNGHO KIM,IC000641,seungho.kim@lge.com,seungho.kim,M,FSE,FSE,NULL,ATSC,20008,Mr. Kim,S,Team Leader,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+155,SEUNGHO KIM,IC000641,seungho.kim@lge.com,seungho.kim,M,FSE,FSE,NULL,ATSC,20008,Mr. Kim,S,Team Leader,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+156,EBUUU,YIC00229,ebu.dashboard@lge.com,ebu.dashboard,M,FSE,FSE,NULL,ATSC,20008,Mr. EBU,S,Team Leader,0,0,0,0,0,0,NULL,NULL,NULL,NULL
+175,YOSEP PUTRA SETIYANTO,IC100294,yosep.setiyanto@lge.com,yosep.setiyanto,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Yosep,S,HW 120Hz,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+1001,SEUNGHO KIM,130073,seungho.kim@lge.com,seungho.kim,M,FSE,STAFF,Team Leader,ATSC,20008,Kim Seungho,S,HW ATSC,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+1002,SUNG BO JUNG,233054,sungbo.jung@lge.com,sungbo.jung,M,FSE,STAFF,Team Leader,"OLED
+",20007,Sung Bo Jung,S,HW OLED,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+NULL,MUHAMMAD REZA PAHLEVI,IC100298,reza.pahlevi@lge.com,reza.pahlevi,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Reza,NULL,HW 60Hz,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
+NULL,FARRAS ZACHRAN ANTHONY,IC100303,farras.anthony@lge.com,farras.anthony,M,Jr. Research Engineer,STAFF,NULL,ATSC,20008,Farras,NULL,HW 60Hz,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL
